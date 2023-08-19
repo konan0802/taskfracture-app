@@ -19,3 +19,14 @@
     $ docker-compose up
     ```
     ブラウザで http://localhost:8080/ にアクセスするとアプリケーションにアクセスできます。
+
+## メモ
+* DBのテストデータ投入
+    ```sql
+    INSERT INTO tasks (name, estimated_hours, actual_hours, status) VALUES
+    ('親タスク1', 10, 8, 1),
+    ('子タスク1', 5, 4, 1),
+    ('子タスク2', 5, 6, 0);
+
+    UPDATE tasks SET parent_task_id = 1 WHERE id IN (2, 3);
+    ```

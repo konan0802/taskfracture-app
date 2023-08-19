@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:5000"
+    environment:
+      - FLASK_APP=app/__init__.py
+      - FLASK_RUN_HOST=0.0.0.0
+    volumes:
+      - ./app:/usr/src/app/app
+      - ./requirements.txt:/usr/src/app/requirements.txt
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: taskfracture
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: pass
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:

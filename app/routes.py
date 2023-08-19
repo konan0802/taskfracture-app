@@ -1,8 +1,11 @@
 from app import app
+from app.database import get_db
+
 
 @app.route('/')
 def index():
     return "Welcome to TaskFracture!"
+
 
 @app.route('/tasks')
 def tasks():

@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <div class="task-list">
+            <!-- Tasks will be rendered here -->
+        </div>
+        <form class="add-task-form">
+            <input type="text" placeholder="New task..." name="new-task">
+            <button type="submit">Add</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+.task-list {
+    margin: 20px 0;
+}
+
+.add-task-form input {
+    width: 70%;
+    padding: 10px;
+}
+
+.add-task-form button {
+    width: 28%;
+    padding: 11px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+}

@@ -41,8 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 );
 
-// ... 既存のコード
-
 // タスク要素のドラッグ設定
 function setDraggable(taskElement, taskId) {
     taskElement.draggable = true;

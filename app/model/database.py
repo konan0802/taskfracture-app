@@ -13,9 +13,10 @@ def get_db():
 
 def get_all_tasks():
     db = get_db()
-    cursor = db.cursor()
+    cursor = db.cursor(dictionary=True)
     cursor.execute("SELECT * FROM tasks")
     return cursor.fetchall()
+
 
 
 def get_task_by_id(task_id):

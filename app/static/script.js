@@ -2,14 +2,22 @@
 async function loadTasks() {
     const response = await fetch('/api/tasks');
     const data = await response.json();
-    const taskList = document.getElementById('task-list');
+    const taskUl = document.getElementById('task-list');
     data.tasks.forEach(task => {
-      const taskElement = document.createElement('div');
-      taskElement.textContent = task.name;
-      taskList.appendChild(taskElement);
+      const taskLi = document.createElement('li');
+      taskLi.textContent = task.name;
+      taskLi.className = 'parent';
+      taskUl.appendChild(taskLi);
     });
 }
 
+// イベントリスナーの追加
+document.addEventListener('DOMContentLoaded', function() {
+    loadTasks();
+    }
+);
+
+/*
 // タスクの追加
 async function addTask() {
     const newTask = {
@@ -28,6 +36,7 @@ async function addTask() {
         loadTasks();  // タスク一覧を更新
     }
 }
+
 
 // タスクの更新（ここでは仮実装）
 async function updateTask(taskId, newPosition) {
@@ -58,7 +67,6 @@ document.getElementById('task-list').addEventListener('drop', function(event) {
     event.preventDefault();
     const taskId = event.dataTransfer.getData('text/plain');
     // ここでAPIを呼び出してタスクの位置を更新
-    updateTask(taskId, /* 新しい位置情報 */);
 });
   
 // タスクの読み込み関数を更新
@@ -71,3 +79,4 @@ async function loadTasks() {
         taskList.appendChild(taskElement);
     });
 }
+*/

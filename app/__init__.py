@@ -1,7 +1,9 @@
 from flask import Flask
-import mysql.connector
-import os
+from .routes import api_routes, web_routes
 
 app = Flask(__name__)
+app.config.from_object('config')
 
-from app import routes
+# 各ルーティングを登録
+app.register_blueprint(api_routes.api, url_prefix='/api')
+app.register_blueprint(web_routes.web)

@@ -1,5 +1,4 @@
 from flask import render_template
-import app.model.database as db
 
 
 def index_view():

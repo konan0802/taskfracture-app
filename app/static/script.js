@@ -1,12 +1,21 @@
+const taskUl = document.getElementById('task-list');
+const sortable = Sortable.create(el);
+
 // タスクの読み込み
 async function loadTasks() {
     const response = await fetch('/api/tasks');
     const data = await response.json();
     const taskUl = document.getElementById('task-list');
     data.tasks.forEach(task => {
-      const taskLi = document.createElement('li');
-      taskLi.textContent = task.name;
-      taskLi.className = 'parent';
+      const taskName = document.createElement('input');
+      taskName.value = task.name;
+      taskName.placeholder = "Task Name";
+      taskLi.appendChild(taskName);
+      if (task.parent_task_id == null) {
+        taskLi.className = 'parent';
+      } else {
+        taskLi.className = 'child';
+      }
       taskUl.appendChild(taskLi);
     });
 }

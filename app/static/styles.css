@@ -15,6 +15,7 @@ body {
 }
 
 #task-list li {
+    position: relative;
     list-style: none;
     border-radius: 5px;
     margin-bottom: 8px;
@@ -27,5 +28,28 @@ body {
 }
 
 #task-list li.child {
+    margin-left: 80px;
+    background-color: #E7F6F2;
+}
+
+#task-list li input {
+    border: none;
+    outline: none
+}
+
+#task-list li::before {
+    content: url(../static/drag-handle-svgrepo-com.png);
+    position: absolute;
+    top: -14px;
+    bottom: 0;
+    left: -387px;
+    transform: scale(0.021);
+}
+
+#task-list li.parent input {
+    background-color: #A5C9CA;
+}
+
+#task-list li.child input {
     background-color: #E7F6F2;
 }

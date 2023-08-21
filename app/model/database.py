@@ -14,7 +14,7 @@ def get_db():
 def get_all_tasks():
     db = get_db()
     cursor = db.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM tasks")
+    cursor.execute("SELECT * FROM `tasks` ORDER BY `order` ASC;")
     return cursor.fetchall()
 
 
@@ -22,7 +22,7 @@ def get_all_tasks():
 def get_task_by_id(task_id):
     db = get_db()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM tasks WHERE id = %s", (task_id,))
+    cursor.execute("SELECT * FROM `tasks` WHERE `id` = %s", (task_id,))
     return cursor.fetchone()
 
 

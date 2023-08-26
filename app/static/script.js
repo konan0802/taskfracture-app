@@ -1,6 +1,44 @@
-/*
-const taskUl = document.getElementById('task-list');
-const sortable = Sortable.create(el);
+const taskParentList = document.getElementById('task-parent-list');
+Sortable.create(taskParentList);
+
+// 親タスクを動的に追加する関数
+function addParentTask() {
+    const taskParentList = document.getElementById('task-parent-list');
+    const newParentTask = document.createElement('li');
+    
+    const taskName = Object.assign(document.createElement('input'), {
+        value: 'Task Name',
+        placeholder: 'Task Name'
+    });
+    newParentTask.appendChild(taskName);
+
+    // 子タスクのリストを作成
+    const newChildTaskList = Object.assign(document.createElement('ul'), {
+        className: 'child-task-list'
+    });
+    
+    // SortableJSを適用
+    Sortable.create(newChildTaskList);
+
+    // ボタンを追加して子タスクを生成できるようにする
+    const addChildButton = document.createElement('button');
+    addChildButton.innerText = '子タスク追加';
+    addChildButton.addEventListener('click', () => addNewChildTask(newChildTaskList));
+
+    newParentTask.appendChild(newChildTaskList);
+    newParentTask.appendChild(addChildButton);
+    taskParentList.appendChild(newParentTask);
+}
+
+// 子タスクを動的に追加する関数
+function addNewChildTask(taskListElement) {
+    const newChildTask = document.createElement('li');
+    newChildTask.innerText = '新規子タスク';
+    taskListElement.appendChild(newChildTask);
+}
+
+// 親タスク追加ボタンにイベントリスナーを設定
+document.getElementById('add-parent-task').addEventListener('click', addParentTask);
 
 // タスクの読み込み
 async function loadTasks() {
@@ -26,7 +64,8 @@ document.addEventListener('DOMContentLoaded', function() {
     loadTasks();
     }
 );
-*/
+
+
 /*
 // タスクの追加
 async function addTask() {

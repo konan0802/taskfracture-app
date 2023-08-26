@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint
 from app.views.api import views  # APIのビジネスロジック
 
 api = Blueprint('api', __name__)
@@ -11,5 +11,4 @@ def get_tasks():
 
 @api.route('/tasks', methods=['POST'])
 def add_task():
-    new_task = request.json
-    return views.add_task(new_task)
+    return views.add_task()

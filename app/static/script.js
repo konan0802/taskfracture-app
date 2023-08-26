@@ -1,3 +1,4 @@
+/*
 const taskUl = document.getElementById('task-list');
 const sortable = Sortable.create(el);
 
@@ -25,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadTasks();
     }
 );
-
+*/
 /*
 // タスクの追加
 async function addTask() {

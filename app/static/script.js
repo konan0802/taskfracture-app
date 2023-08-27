@@ -1,30 +1,31 @@
-// Immediately Invoked Function Expression (IIFE) to limit scope
+// 即時実行関数でスコープを限定
 (function () {
-    // DOM elements
-    const taskParentList = document.getElementById('task-parent-list');
-    Sortable.create(taskParentList);
+    // DOM要素の取得とドラッグ&ドロップの設定
+    const parentTaskList = document.getElementById('task-parent-list');
+    Sortable.create(parentTaskList);
 
-    // Event listeners
-    document.addEventListener('DOMContentLoaded', loadTasks);
-    document.addEventListener('dblclick', handleDoubleClick);
+    // イベントリスナーの追加
+    document.addEventListener('DOMContentLoaded', loadTasksFromServer);
+    document.addEventListener('dblclick', handleDoubleClickOutsideTaskList);
 
-    function handleDoubleClick(event) {
-        if (!taskParentList.contains(event.target)) {
+    // タスクリストの外側でダブルクリックされた場合の処理
+    function handleDoubleClickOutsideTaskList(event) {
+        if (!parentTaskList.contains(event.target)) {
             addParentTask();
         }
     }
 
-    // General function to add a task (either parent or child)
-    function addTask(taskList, targetElement, taskName, isParent, keyDownHandler) {
+    // 親タスクまたは子タスクを追加する一般的な関数
+    function addTask(taskList, referenceElement, taskTitle, isParent, keyEventHandler) {
         const newTask = document.createElement('li');
         const taskDiv = Object.assign(document.createElement('div'), {
             className: isParent ? 'task-parent-div' : 'task-child-div'
         });
         const newTaskName = Object.assign(document.createElement('input'), {
-            value: taskName,
+            value: taskTitle,
             placeholder: 'Task Name'
         });
-        newTaskName.addEventListener('keydown', keyDownHandler);
+        newTaskName.addEventListener('keydown', keyEventHandler);
         taskDiv.appendChild(newTaskName);
         newTask.appendChild(taskDiv);
 
@@ -36,8 +37,8 @@
             Sortable.create(newChildTaskList);
         }
 
-        if (targetElement) {
-            taskList.insertBefore(newTask, targetElement.nextSibling);
+        if (referenceElement) {
+            taskList.insertBefore(newTask, referenceElement.nextSibling);
         } else {
             taskList.appendChild(newTask);
         }
@@ -47,32 +48,34 @@
         return newTask;
     }
 
-    function addParentTask(targetElement, taskName = null) {
-        const newParentTask = addTask(taskParentList, targetElement, taskName, true, handleKeydownOnParent);
-        return newParentTask;
+    // 親タスクを追加する関数
+    function addParentTask(referenceElement, taskTitle = null) {
+        return addTask(parentTaskList, referenceElement, taskTitle, true, handleKeydownOnParent);
     }
 
-    function addNewChildTask(taskListElement, targetElement = null, taskName = null) {
-        addTask(taskListElement, targetElement, taskName, false, handleKeydownOnChild);
+    // 子タスクを追加する関数
+    function addNewChildTask(parentTaskElement, referenceElement = null, taskTitle = null) {
+        return addTask(parentTaskElement, referenceElement, taskTitle, false, handleKeydownOnChild);
     }
 
-    function findNextInput(currentLi) {
+    // 次の入力要素（input）を見つける関数
+    function findNextInput(currentListItem) {
         let nextInput = null;
 
-        const childList = currentLi.querySelector('ul');
+        const childList = currentListItem.querySelector('ul');
         if (childList) {
             nextInput = childList.querySelector('input');
             if (nextInput) return nextInput;
         }
 
-        let sibling = currentLi.nextSibling;
+        let sibling = currentListItem.nextSibling;
         while (sibling) {
             nextInput = sibling.querySelector('input');
             if (nextInput) return nextInput;
             sibling = sibling.nextSibling;
         }
 
-        let parent = currentLi.parentNode.closest('li');
+        let parent = currentListItem.parentNode.closest('li');
         while (parent) {
             sibling = parent.nextSibling;
             while (sibling) {
@@ -86,10 +89,11 @@
         return null;
     }
 
-    function findPreviousInput(currentLi) {
+    // 前の入力要素（input）を見つける関数
+    function findPreviousInput(currentListItem) {
         let prevInput = null;
 
-        let sibling = currentLi.previousSibling;
+        let sibling = currentListItem.previousSibling;
         while (sibling) {
             const lastChild = sibling.querySelector('ul') ? sibling.querySelector('ul').lastElementChild : null;
             if (lastChild) {
@@ -102,7 +106,7 @@
             sibling = sibling.previousSibling;
         }
 
-        const parent = currentLi.parentNode.closest('li');
+        const parent = currentListItem.parentNode.closest('li');
         if (parent) {
             prevInput = parent.querySelector('input');
             return prevInput;
@@ -111,6 +115,7 @@
         return null;
     }
 
+    // 親タスクの入力でのキー操作を処理する関数
     function handleKeydownOnParent(event) {
         if (event.isComposing) return;
 
@@ -134,6 +139,7 @@
         }
     }
 
+    // 子タスクの入力でのキー操作を処理する関数
     function handleKeydownOnChild(event) {
         if (event.isComposing) return;
 
@@ -152,15 +158,16 @@
         }
     }
 
-    async function loadTasks() {
+    // サーバーからタスクを読み込む関数
+    async function loadTasksFromServer() {
         const response = await fetch('/api/tasks');
         const data = await response.json();
-        let parentTaskDom = null;
+        let currentParentTaskElement = null;
         data.tasks.forEach(task => {
             if (task.task_type === 'parent') {
-                parentTaskDom = addParentTask(null, task.name);
+                currentParentTaskElement = addParentTask(null, task.name);
             } else {
-                addNewChildTask(parentTaskDom.querySelector('.task-child-list'), null, task.name);
+                addNewChildTask(currentParentTaskElement.querySelector('.task-child-list'), null, task.name);
             }
         });
     }

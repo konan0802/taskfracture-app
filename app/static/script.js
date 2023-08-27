@@ -119,42 +119,49 @@ function findPreviousInput(currentLi) {
   
     return null;
 }
-  
 
 // 親タスクのinputでのキー操作をハンドルする関数
 function handleKeydownOnParent(event) {
+    // IMEがアクティブな場合は何もしない
+    if (event.isComposing) return;
+
     if (event.key === 'Enter') {
-      addParentTask(event.target);
+        event.preventDefault();
+        addParentTask(event.target);
     } else if (event.key === 'Tab') {
-      event.preventDefault();
-      const childTaskList = event.target.parentNode.querySelector('.child-task-list');
-      if (childTaskList) {
-        addNewChildTask(childTaskList);
-      }
+        event.preventDefault();
+        const childTaskList = event.target.parentNode.querySelector('.child-task-list');
+        if (childTaskList) {
+            addNewChildTask(childTaskList);
+        }
     } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      const prevInput = findPreviousInput(event.target.parentNode);
-      if (prevInput) prevInput.focus();
+        event.preventDefault();
+        const prevInput = findPreviousInput(event.target.parentNode);
+        if (prevInput) prevInput.focus();
     } else if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      const nextInput = findNextInput(event.target.parentNode);
-      if (nextInput) nextInput.focus();
+        event.preventDefault();
+        const nextInput = findNextInput(event.target.parentNode);
+        if (nextInput) nextInput.focus();
     }
 }
 
 // 新規に追加された子タスクのinputでのキー操作をハンドルする関数
-  function handleKeydownOnChild(event) {
+function handleKeydownOnChild(event) {
+    // IMEがアクティブな場合は何もしない
+    if (event.isComposing) return;
+
     if (event.key === 'Enter') {
-      const childTaskList = event.target.parentNode.parentNode;
-      addNewChildTask(childTaskList, event.target);
+        event.preventDefault();
+        const childTaskList = event.target.parentNode.parentNode;
+        addNewChildTask(childTaskList, event.target);
     } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      const prevInput = findPreviousInput(event.target.parentNode);
-      if (prevInput) prevInput.focus();
+        event.preventDefault();
+        const prevInput = findPreviousInput(event.target.parentNode);
+        if (prevInput) prevInput.focus();
     } else if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      const nextInput = findNextInput(event.target.parentNode);
-      if (nextInput) nextInput.focus();
+        event.preventDefault();
+        const nextInput = findNextInput(event.target.parentNode);
+        if (nextInput) nextInput.focus();
     }
 }
 

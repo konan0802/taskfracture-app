@@ -14,7 +14,7 @@ body {
     padding: 20px;
 }
 
-#task-ul-parent li {
+#task-parent-list li {
     position: relative;
     list-style: none;
     border-radius: 5px;
@@ -22,34 +22,25 @@ body {
     padding: 5px 22px;
 }
 
-#task-ul-parent li.parent {
+#task-parent-list li {
     margin-top: 15px;
     background-color: #A5C9CA;
 }
 
-#task-ul-parent li.child {
+#task-parent-list li {
     margin-left: 80px;
     background-color: #E7F6F2;
 }
 
-#task-ul-parent li input {
+#task-parent-list li input {
     border: none;
     outline: none
 }
 
-#task-ul-parent li::before {
-    content: url(../static/drag-handle-svgrepo-com.png);
-    position: absolute;
-    top: -14px;
-    bottom: 0;
-    left: -387px;
-    transform: scale(0.021);
-}
-
-#task-ul-parent li.parent input {
+#task-parent-list li input {
     background-color: #A5C9CA;
 }
 
-#task-ul-parent li.child input {
+#task-parent-list li input {
     background-color: #E7F6F2;
 }

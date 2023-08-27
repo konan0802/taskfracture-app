@@ -6,33 +6,35 @@ Sortable.create(taskParentList);
 function addParentTask(targetElement) {
     const taskParentList = document.getElementById('task-parent-list');
 
+    // 親タスクのリスト
     const newParentTask = document.createElement('li');
+
+    // 親タスクの情報を含めたDivを作成
+    const parentTaskDiv = document.createElement('div');
     const newParentTaskName = Object.assign(document.createElement('input'), {
         placeholder: 'Task Name'
     });
     newParentTaskName.addEventListener('keydown', handleKeydownOnParent);
 
-    newParentTask.appendChild(newParentTaskName);
-
-    // 子タスクのリストを作成
+    // 親タスクの子タスクのリストを作成
     const newChildTaskList = Object.assign(document.createElement('ul'), {
         className: 'child-task-list'
     });
+    newChildTaskList.addEventListener('keydown', handleKeydownOnChild);  // 子タスクのキー操作をハンドル
 
     // SortableJSを適用
     Sortable.create(newChildTaskList);
 
+    parentTaskDiv.appendChild(newParentTaskName);
+    newParentTask.appendChild(parentTaskDiv);
     newParentTask.appendChild(newChildTaskList);
 
     if (targetElement) {
-        // Enterを押した親タスクの直後に新しい親タスクを挿入
         taskParentList.insertBefore(newParentTask, targetElement.parentNode.nextSibling);
     } else {
-        // 親タスクリストの末尾に追加
         taskParentList.appendChild(newParentTask);
     }
 
-    // フォーカスを新規親タスクに移動
     newParentTaskName.focus();
 }
 

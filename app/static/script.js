@@ -10,7 +10,9 @@ function addParentTask(targetElement) {
     const newParentTask = document.createElement('li');
 
     // 親タスクの情報を含めたDivを作成
-    const parentTaskDiv = document.createElement('div');
+    const parentTaskDiv = Object.assign(document.createElement('div'), {
+        className: 'task-parent-div'
+    });
     const newParentTaskName = Object.assign(document.createElement('input'), {
         placeholder: 'Task Name'
     });
@@ -20,7 +22,6 @@ function addParentTask(targetElement) {
     const newChildTaskList = Object.assign(document.createElement('ul'), {
         className: 'task-child-list'
     });
-    newChildTaskList.addEventListener('keydown', handleKeydownOnChild);  // 子タスクのキー操作をハンドル
 
     // SortableJSを適用
     Sortable.create(newChildTaskList);
@@ -42,16 +43,22 @@ function addParentTask(targetElement) {
 function addNewChildTask(taskListElement, targetElement) {
 
     const newChildTask = document.createElement('li');
+
+    // 親タスクの情報を含めたDivを作成
+    const childTaskDiv = Object.assign(document.createElement('div'), {
+        className: 'task-child-div'
+    });
     const newChildTaskName = Object.assign(document.createElement('input'), {
         placeholder: 'Task Name'
     });
     newChildTaskName.addEventListener('keydown', handleKeydownOnChild);
 
-    newChildTask.appendChild(newChildTaskName);
+    childTaskDiv.appendChild(newChildTaskName);
+    newChildTask.appendChild(childTaskDiv);
 
     if (targetElement) {
         // Enterを押した子タスクの直後に新しい子タスクを挿入
-        taskListElement.insertBefore(newChildTask, targetElement.parentNode.nextSibling);
+        taskListElement.insertBefore(newChildTask, targetElement.nextSibling);
     } else {
         // 子タスクリストの末尾に追加
         taskListElement.appendChild(newChildTask);
@@ -129,20 +136,20 @@ function handleKeydownOnParent(event) {
 
     if (event.key === 'Enter') {
         event.preventDefault();
-        addParentTask(event.target);
+        addParentTask(event.target.parentNode);
     } else if (event.key === 'Tab') {
         event.preventDefault();
-        const childTaskList = event.target.parentNode.querySelector('.task-child-list');
+        const childTaskList = event.target.parentNode.parentNode.querySelector('.task-child-list');
         if (childTaskList) {
             addNewChildTask(childTaskList);
         }
     } else if (event.key === 'ArrowUp') {
         event.preventDefault();
-        const prevInput = findPreviousInput(event.target.parentNode);
+        const prevInput = findPreviousInput(event.target.parentNode.parentNode);
         if (prevInput) prevInput.focus();
     } else if (event.key === 'ArrowDown') {
         event.preventDefault();
-        const nextInput = findNextInput(event.target.parentNode);
+        const nextInput = findNextInput(event.target.parentNode.parentNode);
         if (nextInput) nextInput.focus();
     }
 }
@@ -154,15 +161,15 @@ function handleKeydownOnChild(event) {
 
     if (event.key === 'Enter') {
         event.preventDefault();
-        const childTaskList = event.target.parentNode.parentNode;
-        addNewChildTask(childTaskList, event.target);
+        const childTaskList = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.task-child-list');
+        addNewChildTask(childTaskList, event.target.parentNode.parentNode);
     } else if (event.key === 'ArrowUp') {
         event.preventDefault();
-        const prevInput = findPreviousInput(event.target.parentNode);
+        const prevInput = findPreviousInput(event.target.parentNode.parentNode);
         if (prevInput) prevInput.focus();
     } else if (event.key === 'ArrowDown') {
         event.preventDefault();
-        const nextInput = findNextInput(event.target.parentNode);
+        const nextInput = findNextInput(event.target.parentNode.parentNode);
         if (nextInput) nextInput.focus();
     }
 }
@@ -175,6 +182,7 @@ document.addEventListener('dblclick', function(event) {
     }
 });
 
+/*
 // タスクの読み込み
 async function loadTasks() {
     const response = await fetch('/api/tasks');
@@ -199,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadTasks();
     }
 );
-
+*/
 
 /*
 // タスクの追加

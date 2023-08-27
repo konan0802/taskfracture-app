@@ -9,38 +9,54 @@ body {
 }
 
 #mainWrapper {
-    max-width: 1000px;
-    margin: 80px auto;
-    padding: 20px;
+    max-width: 930px;
+    margin: 100px auto;
 }
 
-#task-parent-list li {
-    position: relative;
+#task-parent-list {
+    padding-inline-start: 0;
+}
+
+.task-child-list {
+    margin: 8px 0 14px;
+    padding-inline-start: 80px;
+}
+
+#task-parent-list>li,
+.task-child-list>li {
     list-style: none;
-    border-radius: 5px;
     margin-bottom: 8px;
-    padding: 5px 22px;
 }
 
-#task-parent-list li {
-    margin-top: 15px;
+.task-parent-div,
+.task-child-div {
+    border-radius: 6px;
+}
+
+.task-parent-div {
+    padding: 7px 0px 5px 20px;
     background-color: #A5C9CA;
 }
 
-#task-parent-list li {
-    margin-left: 80px;
+.task-child-div {
+    padding: 5px 0px 3.3px 14px;
     background-color: #E7F6F2;
 }
 
-#task-parent-list li input {
+.task-parent-div>input,
+.task-child-div>input {
     border: none;
-    outline: none
+    outline: none;
+    border-radius: 6px;
+    width: 100%;
 }
 
-#task-parent-list li input {
+.task-parent-div>input {
+    font-size: 15.5px;
     background-color: #A5C9CA;
 }
 
-#task-parent-list li input {
+.task-child-div>input {
+    font-size: 14px;
     background-color: #E7F6F2;
 }

@@ -1,3 +1,4 @@
+// 親タスクのドラッグ&ドロップを設定
 const taskParentList = document.getElementById('task-parent-list');
 Sortable.create(taskParentList);
 
@@ -36,6 +37,14 @@ function addNewChildTask(taskListElement) {
     newChildTask.innerText = '新規子タスク';
     taskListElement.appendChild(newChildTask);
 }
+
+// ダブルクリックで親タスクを追加
+document.addEventListener('dblclick', function(event) {
+    const taskParentList = document.getElementById('task-parent-list');
+    if (!taskParentList.contains(event.target)) {
+        addParentTask();
+    }
+});
 
 // 親タスク追加ボタンにイベントリスナーを設定
 document.getElementById('add-parent-task').addEventListener('click', addParentTask);

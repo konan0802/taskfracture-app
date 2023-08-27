@@ -59,24 +59,94 @@ function addNewChildTask(taskListElement, targetElement) {
     newChildTaskName.focus();
 }
 
+function findNextInput(currentLi) {
+    let nextInput = null;
+    
+    // Look in child list
+    const childList = currentLi.querySelector('ul');
+    if (childList) {
+      nextInput = childList.querySelector('input');
+      if (nextInput) return nextInput;
+    }
+  
+    // Look in next siblings
+    let sibling = currentLi.nextSibling;
+    while (sibling) {
+      nextInput = sibling.querySelector('input');
+      if (nextInput) return nextInput;
+      sibling = sibling.nextSibling;
+    }
+  
+    // Look in parent next siblings
+    let parent = currentLi.parentNode.closest('li');
+    while (parent) {
+      sibling = parent.nextSibling;
+      while (sibling) {
+        nextInput = sibling.querySelector('input');
+        if (nextInput) return nextInput;
+        sibling = sibling.nextSibling;
+      }
+      parent = parent.parentNode.closest('li');
+    }
+  
+    return null;
+}
+  
+  function findPreviousInput(currentLi) {
+    let prevInput = null;
+  
+    // Look in previous siblings
+    let sibling = currentLi.previousSibling;
+    while (sibling) {
+      prevInput = sibling.querySelector('input');
+      if (prevInput) return prevInput;
+      sibling = sibling.previousSibling;
+    }
+  
+    // Look in parent
+    const parent = currentLi.parentNode.closest('li');
+    if (parent) {
+      prevInput = parent.querySelector('input');
+      return prevInput;
+    }
+  
+    return null;
+}
+
 // 親タスクのinputでのキー操作をハンドルする関数
 function handleKeydownOnParent(event) {
     if (event.key === 'Enter') {
-        addParentTask(event.target);
+      addParentTask(event.target);
     } else if (event.key === 'Tab') {
-        event.preventDefault();
-        const childTaskList = event.target.parentNode.querySelector('.child-task-list');
-        if (childTaskList) {
-            addNewChildTask(childTaskList);
-        }
+      event.preventDefault();
+      const childTaskList = event.target.parentNode.querySelector('.child-task-list');
+      if (childTaskList) {
+        addNewChildTask(childTaskList);
+      }
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      const prevInput = findPreviousInput(event.target.parentNode);
+      if (prevInput) prevInput.focus();
+    } else if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      const nextInput = findNextInput(event.target.parentNode);
+      if (nextInput) nextInput.focus();
     }
 }
 
 // 新規に追加された子タスクのinputでのキー操作をハンドルする関数
-function handleKeydownOnChild(event) {
+  function handleKeydownOnChild(event) {
     if (event.key === 'Enter') {
-        const childTaskList = event.target.parentNode.parentNode;
-        addNewChildTask(childTaskList, event.target);
+      const childTaskList = event.target.parentNode.parentNode;
+      addNewChildTask(childTaskList, event.target);
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      const prevInput = findPreviousInput(event.target.parentNode);
+      if (prevInput) prevInput.focus();
+    } else if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      const nextInput = findNextInput(event.target.parentNode);
+      if (nextInput) nextInput.focus();
     }
 }
 

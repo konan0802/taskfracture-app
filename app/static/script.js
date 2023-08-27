@@ -92,12 +92,19 @@ function findNextInput(currentLi) {
     return null;
 }
   
-  function findPreviousInput(currentLi) {
+function findPreviousInput(currentLi) {
     let prevInput = null;
   
     // Look in previous siblings
     let sibling = currentLi.previousSibling;
     while (sibling) {
+      // Try to find the last child task of this sibling
+      const lastChild = sibling.querySelector('ul') ? sibling.querySelector('ul').lastElementChild : null;
+      if (lastChild) {
+        prevInput = lastChild.querySelector('input');
+        if (prevInput) return prevInput;
+      }
+  
       prevInput = sibling.querySelector('input');
       if (prevInput) return prevInput;
       sibling = sibling.previousSibling;
@@ -112,6 +119,7 @@ function findNextInput(currentLi) {
   
     return null;
 }
+  
 
 // 親タスクのinputでのキー操作をハンドルする関数
 function handleKeydownOnParent(event) {

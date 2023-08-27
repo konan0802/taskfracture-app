@@ -16,21 +16,32 @@ def get_all_tasks():
     cursor = db.cursor(dictionary=True)
     cursor.execute(
         """SELECT
-                p.id              AS parent_id,
-                p.name            AS parent_name,
-                p.estimated_hours AS parent_estimated_hours,
-                p.actual_hours    AS parent_actual_hours,
-                p.status          AS parent_status,
+                'parent' AS task_type,
+                p.id     AS task_id,
+                p.name   AS name,
+                p.status AS status,
+                NULL     AS estimated_hours,
+                NULL     AS actual_hours,
+                p.order  AS parent_order,
+                NULL     AS child_order
+            FROM
+                parent_tasks p
+            UNION ALL
+            SELECT
+                'child'           AS task_type,
+                c.id              AS task_id,
+                c.name            AS name,
+                c.status          AS status,
+                c.estimated_hours AS actual_hours,
+                c.actual_hours    AS actual_hours,
                 p.order           AS parent_order,
-                s.id              AS sub_id,
-                s.name            AS sub_name,
-                s.estimated_hours AS sub_estimated_hours,
-                s.actual_hours    AS sub_actual_hours,
-                s.status          AS sub_status,
-                s.order           AS sub_order
-           FROM parent_tasks p
-           LEFT JOIN sub_tasks s ON p.id = s.parent_task_id
-           ORDER BY p.order ASC, s.order ASC;"""
+                c.order           AS child_order
+            FROM
+                sub_tasks c
+            JOIN parent_tasks p ON c.parent_task_id = p.id
+            ORDER BY
+                parent_order ASC,
+                child_order ASC;"""
     )
     return cursor.fetchall()
 

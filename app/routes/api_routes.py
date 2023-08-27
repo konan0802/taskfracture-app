@@ -1,5 +1,5 @@
 from flask import Blueprint
-from app.views.api import views  # APIのビジネスロジック
+from app.views.api import views
 
 api = Blueprint('api', __name__)
 

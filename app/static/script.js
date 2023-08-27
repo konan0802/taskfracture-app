@@ -18,7 +18,7 @@ function addParentTask(targetElement) {
 
     // 親タスクの子タスクのリストを作成
     const newChildTaskList = Object.assign(document.createElement('ul'), {
-        className: 'child-task-list'
+        className: 'task-child-list'
     });
     newChildTaskList.addEventListener('keydown', handleKeydownOnChild);  // 子タスクのキー操作をハンドル
 
@@ -132,7 +132,7 @@ function handleKeydownOnParent(event) {
         addParentTask(event.target);
     } else if (event.key === 'Tab') {
         event.preventDefault();
-        const childTaskList = event.target.parentNode.querySelector('.child-task-list');
+        const childTaskList = event.target.parentNode.querySelector('.task-child-list');
         if (childTaskList) {
             addNewChildTask(childTaskList);
         }

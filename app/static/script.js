@@ -3,15 +3,16 @@ const taskParentList = document.getElementById('task-parent-list');
 Sortable.create(taskParentList);
 
 // 親タスクを動的に追加する関数
-function addParentTask() {
-    const taskParentList = document.getElementById('task-parent-list');
-    const newParentTask = document.createElement('li');
+function addParentTask(targetElement) {
+    const taskParentList = targetElement ? targetElement.parentNode : document.getElementById('task-parent-list');
     
-    const taskName = Object.assign(document.createElement('input'), {
-        value: 'Task Name',
+    const newParentTask = document.createElement('li');
+    const newParentTaskName = Object.assign(document.createElement('input'), {
         placeholder: 'Task Name'
     });
-    newParentTask.appendChild(taskName);
+    newParentTaskName.addEventListener('keydown', handleKeydownOnParent);
+
+    newParentTask.appendChild(newParentTaskName);
 
     // 子タスクのリストを作成
     const newChildTaskList = Object.assign(document.createElement('ul'), {
@@ -21,21 +22,49 @@ function addParentTask() {
     // SortableJSを適用
     Sortable.create(newChildTaskList);
 
-    // ボタンを追加して子タスクを生成できるようにする
-    const addChildButton = document.createElement('button');
-    addChildButton.innerText = '子タスク追加';
-    addChildButton.addEventListener('click', () => addNewChildTask(newChildTaskList));
-
     newParentTask.appendChild(newChildTaskList);
-    newParentTask.appendChild(addChildButton);
     taskParentList.appendChild(newParentTask);
+
+    // フォーカスを新規親タスクに移動
+    newParentTaskName.focus();
 }
 
 // 子タスクを動的に追加する関数
 function addNewChildTask(taskListElement) {
+
     const newChildTask = document.createElement('li');
-    newChildTask.innerText = '新規子タスク';
+    const newChildTaskName = Object.assign(document.createElement('input'), {
+        placeholder: 'Task Name'
+    });
+    newChildTaskName.addEventListener('keydown', handleKeydownOnChild);
+
+    newChildTask.appendChild(newChildTaskName);
+
     taskListElement.appendChild(newChildTask);
+
+    // フォーカスを新規子タスクに移動
+    newChildTaskName.focus();
+}
+
+// 親タスクのinputでのキー操作をハンドルする関数
+function handleKeydownOnParent(event) {
+    if (event.key === 'Enter') {
+        addParentTask(event.target);
+    } else if (event.key === 'Tab') {
+        event.preventDefault();
+        const childTaskList = event.target.parentNode.querySelector('.child-task-list');
+        if (childTaskList) {
+            addNewChildTask(childTaskList);
+        }
+    }
+}
+
+// 新規に追加された子タスクのinputでのキー操作をハンドルする関数
+function handleKeydownOnChild(event) {
+    if (event.key === 'Enter') {
+        const childTaskList = event.target.parentNode.parentNode;
+        addNewChildTask(childTaskList);
+    }
 }
 
 // ダブルクリックで親タスクを追加
@@ -45,9 +74,6 @@ document.addEventListener('dblclick', function(event) {
         addParentTask();
     }
 });
-
-// 親タスク追加ボタンにイベントリスナーを設定
-document.getElementById('add-parent-task').addEventListener('click', addParentTask);
 
 // タスクの読み込み
 async function loadTasks() {

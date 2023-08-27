@@ -4,8 +4,8 @@ Sortable.create(taskParentList);
 
 // 親タスクを動的に追加する関数
 function addParentTask(targetElement) {
-    const taskParentList = targetElement ? targetElement.parentNode : document.getElementById('task-parent-list');
-    
+    const taskParentList = document.getElementById('task-parent-list');
+
     const newParentTask = document.createElement('li');
     const newParentTaskName = Object.assign(document.createElement('input'), {
         placeholder: 'Task Name'
@@ -18,19 +18,26 @@ function addParentTask(targetElement) {
     const newChildTaskList = Object.assign(document.createElement('ul'), {
         className: 'child-task-list'
     });
-    
+
     // SortableJSを適用
     Sortable.create(newChildTaskList);
 
     newParentTask.appendChild(newChildTaskList);
-    taskParentList.appendChild(newParentTask);
+
+    if (targetElement) {
+        // Enterを押した親タスクの直後に新しい親タスクを挿入
+        taskParentList.insertBefore(newParentTask, targetElement.parentNode.nextSibling);
+    } else {
+        // 親タスクリストの末尾に追加
+        taskParentList.appendChild(newParentTask);
+    }
 
     // フォーカスを新規親タスクに移動
     newParentTaskName.focus();
 }
 
 // 子タスクを動的に追加する関数
-function addNewChildTask(taskListElement) {
+function addNewChildTask(taskListElement, targetElement) {
 
     const newChildTask = document.createElement('li');
     const newChildTaskName = Object.assign(document.createElement('input'), {
@@ -40,7 +47,13 @@ function addNewChildTask(taskListElement) {
 
     newChildTask.appendChild(newChildTaskName);
 
-    taskListElement.appendChild(newChildTask);
+    if (targetElement) {
+        // Enterを押した子タスクの直後に新しい子タスクを挿入
+        taskListElement.insertBefore(newChildTask, targetElement.parentNode.nextSibling);
+    } else {
+        // 子タスクリストの末尾に追加
+        taskListElement.appendChild(newChildTask);
+    }
 
     // フォーカスを新規子タスクに移動
     newChildTaskName.focus();
@@ -63,7 +76,7 @@ function handleKeydownOnParent(event) {
 function handleKeydownOnChild(event) {
     if (event.key === 'Enter') {
         const childTaskList = event.target.parentNode.parentNode;
-        addNewChildTask(childTaskList);
+        addNewChildTask(childTaskList, event.target);
     }
 }
 

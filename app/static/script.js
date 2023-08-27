@@ -43,10 +43,13 @@
         }
 
         newTaskName.focus();
+
+        return newTask;
     }
 
     function addParentTask(targetElement, taskName = null) {
-        addTask(taskParentList, targetElement, taskName, true, handleKeydownOnParent);
+        const newParentTask = addTask(taskParentList, targetElement, taskName, true, handleKeydownOnParent);
+        return newParentTask;
     }
 
     function addNewChildTask(taskListElement, targetElement = null, taskName = null) {
@@ -113,7 +116,7 @@
 
         if (event.key === 'Enter') {
             event.preventDefault();
-            addParentTask(event.target.parentNode);
+            addParentTask(event.target.parentNode.parentNode);
         } else if (event.key === 'Tab') {
             event.preventDefault();
             const childTaskList = event.target.parentNode.parentNode.querySelector('.task-child-list');

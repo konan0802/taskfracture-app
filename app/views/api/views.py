@@ -9,6 +9,22 @@ def get_tasks():
 
 
 def add_task():
-    new_task = request.json
-    models.add_task(new_task)
-    return jsonify({'message': 'Task added successfully!'})
+    data = request.get_json()
+    task_data = {
+        'name': data.get('name', ''),
+        'isParent': data.get('isParent', False),
+        'order': data.get('order', 0)
+    }
+
+    task_id = models.add_new_task(task_data)
+
+    return jsonify({'status': 'success', 'id': task_id})
+
+
+def update_task_order():
+    data = request.get_json()
+    task_order_data = data.get('taskOrder', [])
+
+    models.update_task_order(task_order_data)
+
+    return jsonify({'status': 'success'})

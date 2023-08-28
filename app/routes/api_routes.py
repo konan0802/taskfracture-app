@@ -9,6 +9,11 @@ def get_tasks():
     return views.get_tasks()
 
 
-@api.route('/tasks', methods=['POST'])
+@api.route('/addTask', methods=['POST'])
 def add_task():
     return views.add_task()
+
+
+@api.route('/updateTaskOrder', methods=['POST'])
+def update_task_order():
+    return views.update_task_order()

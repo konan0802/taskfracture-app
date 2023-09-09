@@ -32,7 +32,7 @@ export default function TaskList() {
     }
   };
 
-  const addChildTask = (parentId, name = "New Child Task") => {
+  const addChildTask = (parentId, name) => {
     const newTaskId = taskIdCounter + 1;
     const newTask = {
       id: newTaskId,

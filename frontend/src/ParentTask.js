@@ -2,7 +2,13 @@ import React from "react";
 import { ReactSortable } from "react-sortablejs";
 import ChildTask from "./ChildTask";
 
-export default function ParentTask({ task, addParentTask, index, newTaskRef }) {
+export default function ParentTask({
+  task,
+  addParentTask,
+  addChildTask,
+  index,
+  newTaskRef,
+}) {
   const handleKeyDown = (event) => {
     // IMEがアクティブな場合は何もしない
     if (event.nativeEvent.isComposing) return;
@@ -11,7 +17,11 @@ export default function ParentTask({ task, addParentTask, index, newTaskRef }) {
       event.preventDefault();
       addParentTask(null, index + 1);
     }
-    // Additional key events can be added here later
+
+    if (event.key === "Tab") {
+      event.preventDefault();
+      addChildTask(task.id);
+    }
   };
 
   return (

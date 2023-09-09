@@ -1,0 +1,18 @@
+import React from 'react';
+import { ReactSortable } from 'react-sortablejs';
+import ChildTask from './ChildTask';
+
+export default function ParentTask({ task }) {
+  return (
+    <li className="task-item">
+      <div className="task-parent-div">
+        {task.name}
+      </div>
+      <ReactSortable list={task.children} setList={(newChildren) => ({ ...task, children: newChildren })}>
+        {task.children.map((childTask) => (
+          <ChildTask key={childTask.id} task={childTask} />
+        ))}
+      </ReactSortable>
+    </li>
+  );
+}

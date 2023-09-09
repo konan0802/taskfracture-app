@@ -39,10 +39,13 @@ export default function ParentTask({
         list={task.children}
         setList={(newChildren) => ({ ...task, children: newChildren })}
       >
-        {task.children.map((childTask) => (
+        {task.children.map((childTask, childIndex) => (
           <ChildTask
             key={childTask.id}
             task={childTask}
+            addChildTask={addChildTask}
+            parentId={task.id}
+            index={childIndex}
             focusedTaskId={focusedTaskId}
             newTaskRef={newTaskRef}
           />

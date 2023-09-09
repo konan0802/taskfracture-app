@@ -24,20 +24,20 @@ export default function TaskList() {
     setFocusedTaskId(newTaskId); // Add this line
   };
 
-  const addChildTask = (parentId, name) => {
+  const addChildTask = (parentId, name, index = 0) => {
     const newTaskId = taskIdCounter + 1;
     const newTask = {
       id: newTaskId,
       name,
       isParent: false,
-      order: parentTasks.length,
+      order: index,
     };
     const newParentTasks = [...parentTasks];
     const parentTask = newParentTasks.find((task) => task.id === parentId);
-    parentTask.children.push(newTask);
+    parentTask.children.splice(index, 0, newTask);
     setParentTasks(newParentTasks);
     setTaskIdCounter(newTaskId);
-    setFocusedTaskId(newTaskId); // Add this line
+    setFocusedTaskId(newTaskId);
   };
 
   const handleDoubleClickOutside = (event) => {

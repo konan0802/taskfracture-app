@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ReactSortable } from 'react-sortablejs';
 import ParentTask from './ParentTask';
 
@@ -26,13 +26,21 @@ export default function TaskList() {
     }
   };
 
+  useEffect(() => {
+    // グローバルなダブルクリックイベントリスナーを追加
+    window.addEventListener('dblclick', handleDoubleClickOutside);
+
+    // クリーンアップ: コンポーネントがアンマウントされる際にグローバルイベントリスナーを削除
+    return () => {
+      window.removeEventListener('dblclick', handleDoubleClickOutside);
+    };
+  }, []);
+
   return (
-    <div onDoubleClick={handleDoubleClickOutside}>
-      <ReactSortable list={parentTasks} setList={setParentTasks}>
-        {parentTasks.map((task) => (
-          <ParentTask key={task.id} task={task} />
-        ))}
-      </ReactSortable>
-    </div>
+    <ReactSortable id="task-parent-list" list={parentTasks} setList={setParentTasks}>
+      {parentTasks.map((task) => (
+        <ParentTask key={task.id} task={task} />
+      ))}
+    </ReactSortable>
   );
 }

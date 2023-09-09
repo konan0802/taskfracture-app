@@ -8,7 +8,7 @@ export default function ParentTask({ task }) {
       <div className="task-parent-div">
         {task.name}
       </div>
-      <ReactSortable list={task.children} setList={(newChildren) => ({ ...task, children: newChildren })}>
+      <ReactSortable className="task-child-list" list={task.children} setList={(newChildren) => ({ ...task, children: newChildren })}>
         {task.children.map((childTask) => (
           <ChildTask key={childTask.id} task={childTask} />
         ))}

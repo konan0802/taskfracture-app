@@ -6,6 +6,7 @@ export default function TaskList() {
   const [parentTasks, setParentTasks] = useState([]);
   const [taskIdCounter, setTaskIdCounter] = useState(0);
   const newTaskRef = React.useRef(null);
+  const [focusedTaskId, setFocusedTaskId] = useState(null); // Add this line
 
   const addParentTask = (name, index = parentTasks.length) => {
     const newTaskId = taskIdCounter + 1;
@@ -20,16 +21,7 @@ export default function TaskList() {
     newParentTasks.splice(index, 0, newTask);
     setParentTasks(newParentTasks);
     setTaskIdCounter(newTaskId);
-    setTimeout(() => {
-      newTaskRef.current?.focus();
-    }, 0);
-  };
-
-  const handleDoubleClickOutside = (event) => {
-    event.preventDefault();
-    if (!event.target.closest(".task-item")) {
-      addParentTask();
-    }
+    setFocusedTaskId(newTaskId); // Add this line
   };
 
   const addChildTask = (parentId, name) => {
@@ -45,17 +37,30 @@ export default function TaskList() {
     parentTask.children.push(newTask);
     setParentTasks(newParentTasks);
     setTaskIdCounter(newTaskId);
+    setFocusedTaskId(newTaskId); // Add this line
+  };
+
+  const handleDoubleClickOutside = (event) => {
+    event.preventDefault();
+    if (!event.target.closest(".task-item")) {
+      addParentTask();
+    }
   };
 
   useEffect(() => {
-    // グローバルなダブルクリックイベントリスナーを追加
     window.addEventListener("dblclick", handleDoubleClickOutside);
-
-    // クリーンアップ: コンポーネントがアンマウントされる際にグローバルイベントリスナーを削除
     return () => {
       window.removeEventListener("dblclick", handleDoubleClickOutside);
     };
   }, [parentTasks, taskIdCounter]);
+
+  useEffect(() => {
+    if (focusedTaskId !== null) {
+      setTimeout(() => {
+        newTaskRef.current?.focus();
+      }, 0);
+    }
+  }, [focusedTaskId]);
 
   return (
     <ReactSortable
@@ -71,6 +76,7 @@ export default function TaskList() {
           addChildTask={addChildTask}
           index={index}
           newTaskRef={newTaskRef}
+          focusedTaskId={focusedTaskId}
         />
       ))}
     </ReactSortable>

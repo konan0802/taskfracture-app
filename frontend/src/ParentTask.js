@@ -8,9 +8,9 @@ export default function ParentTask({
   addChildTask,
   index,
   newTaskRef,
+  focusedTaskId,
 }) {
   const handleKeyDown = (event) => {
-    // IMEがアクティブな場合は何もしない
     if (event.nativeEvent.isComposing) return;
 
     if (event.key === "Enter") {
@@ -28,7 +28,7 @@ export default function ParentTask({
     <li className="task-item">
       <div className="task-parent-div">
         <input
-          ref={task.order === index ? newTaskRef : null}
+          ref={task.id === focusedTaskId ? newTaskRef : null}
           value={task.name}
           placeholder="Task Name"
           onKeyDown={handleKeyDown}
@@ -40,7 +40,12 @@ export default function ParentTask({
         setList={(newChildren) => ({ ...task, children: newChildren })}
       >
         {task.children.map((childTask) => (
-          <ChildTask key={childTask.id} task={childTask} />
+          <ChildTask
+            key={childTask.id}
+            task={childTask}
+            focusedTaskId={focusedTaskId}
+            newTaskRef={newTaskRef}
+          />
         ))}
       </ReactSortable>
     </li>

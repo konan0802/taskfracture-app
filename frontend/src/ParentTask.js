@@ -10,6 +10,7 @@ export default function ParentTask({
   index,
   newTaskRef,
   focusedTaskId,
+  setFocusedTaskId,
 }) {
   const handleKeyDown = (event) => {
     if (event.nativeEvent.isComposing) return;
@@ -33,6 +34,7 @@ export default function ParentTask({
           value={task.name}
           placeholder="Task Name"
           onKeyDown={handleKeyDown}
+          onFocus={() => setFocusedTaskId(task.id)}
         ></input>
       </div>
       <ReactSortable
@@ -47,8 +49,9 @@ export default function ParentTask({
             addChildTask={addChildTask}
             parentId={task.id}
             index={childIndex}
-            focusedTaskId={focusedTaskId}
             newTaskRef={newTaskRef}
+            focusedTaskId={focusedTaskId}
+            setFocusedTaskId={setFocusedTaskId}
           />
         ))}
       </ReactSortable>

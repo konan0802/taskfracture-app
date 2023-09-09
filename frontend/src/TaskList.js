@@ -6,7 +6,8 @@ export default function TaskList() {
   const [parentTasks, setParentTasks] = useState([]);
   const [taskIdCounter, setTaskIdCounter] = useState(0);
   const newTaskRef = React.useRef(null);
-  const [focusedTaskId, setFocusedTaskId] = useState(null); // Add this line
+  const [focusedTaskId, setFocusedTaskId] = useState(null);
+  const [taskOrder, setTaskOrder] = useState([]);
 
   const addParentTask = (name, index = parentTasks.length) => {
     const newTaskId = taskIdCounter + 1;
@@ -54,6 +55,22 @@ export default function TaskList() {
     }
   };
 
+  const handleGlobalKeyDown = (event) => {
+    if (focusedTaskId === null) return;
+
+    const currentIndex = taskOrder.indexOf(focusedTaskId);
+    if (currentIndex === -1) return;
+
+    if (event.key === "ArrowUp" && currentIndex > 0) {
+      setFocusedTaskId(taskOrder[currentIndex - 1]);
+    } else if (
+      event.key === "ArrowDown" &&
+      currentIndex < taskOrder.length - 1
+    ) {
+      setFocusedTaskId(taskOrder[currentIndex + 1]);
+    }
+  };
+
   useEffect(() => {
     window.addEventListener("dblclick", handleDoubleClickOutside);
     return () => {
@@ -68,6 +85,24 @@ export default function TaskList() {
       }, 0);
     }
   }, [focusedTaskId]);
+
+  useEffect(() => {
+    const newTaskOrder = [];
+    parentTasks.forEach((parentTask) => {
+      newTaskOrder.push(parentTask.id);
+      parentTask.children.forEach((childTask) => {
+        newTaskOrder.push(childTask.id);
+      });
+    });
+    setTaskOrder(newTaskOrder);
+  }, [parentTasks]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleGlobalKeyDown);
+    };
+  }, [focusedTaskId, taskOrder]);
 
   return (
     <ReactSortable
@@ -85,6 +120,7 @@ export default function TaskList() {
           index={index}
           newTaskRef={newTaskRef}
           focusedTaskId={focusedTaskId}
+          setFocusedTaskId={setFocusedTaskId}
         />
       ))}
     </ReactSortable>

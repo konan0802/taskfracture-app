@@ -5,8 +5,9 @@ export default function ChildTask({
   addChildTask,
   parentId,
   index,
-  focusedTaskId,
   newTaskRef,
+  focusedTaskId,
+  setFocusedTaskId,
 }) {
   const handleKeyDown = (event) => {
     if (event.nativeEvent.isComposing) return;
@@ -25,6 +26,7 @@ export default function ChildTask({
           value={task.name}
           placeholder="Task Name"
           onKeyDown={handleKeyDown}
+          onFocus={() => setFocusedTaskId(task.id)}
         ></input>
       </div>
     </li>

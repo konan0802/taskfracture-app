@@ -4,7 +4,7 @@ export default function ChildTask({ task }) {
   return (
     <li className="task-item">
       <div className="task-child-div">
-        {task.name}
+        <input value={task.name} placeholder='Task Name' ></input>
       </div>
     </li>
   );

@@ -20,8 +20,9 @@ export default function TaskList() {
   };
 
   const handleDoubleClickOutside = (event) => {
+    event.preventDefault();
     if (!event.target.closest('.task-item')) {
-      addParentTask('New Parent Task');
+      addParentTask();
     }
   };
 

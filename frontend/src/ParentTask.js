@@ -6,6 +6,7 @@ export default function ParentTask({
   task,
   addParentTask,
   addChildTask,
+  updateChildTasks,
   index,
   newTaskRef,
   focusedTaskId,
@@ -37,7 +38,7 @@ export default function ParentTask({
       <ReactSortable
         className="task-child-list"
         list={task.children}
-        setList={(newChildren) => ({ ...task, children: newChildren })}
+        setList={(newChildren) => updateChildTasks(task.id, newChildren)} // Use the function here
       >
         {task.children.map((childTask, childIndex) => (
           <ChildTask

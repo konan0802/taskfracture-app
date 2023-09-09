@@ -40,6 +40,13 @@ export default function TaskList() {
     setFocusedTaskId(newTaskId);
   };
 
+  const updateChildTasks = (parentId, newChildren) => {
+    const newParentTasks = [...parentTasks];
+    const parentTask = newParentTasks.find((task) => task.id === parentId);
+    parentTask.children = newChildren;
+    setParentTasks(newParentTasks);
+  };
+
   const handleDoubleClickOutside = (event) => {
     event.preventDefault();
     if (!event.target.closest(".task-item")) {
@@ -74,6 +81,7 @@ export default function TaskList() {
           task={task}
           addParentTask={addParentTask}
           addChildTask={addChildTask}
+          updateChildTasks={updateChildTasks}
           index={index}
           newTaskRef={newTaskRef}
           focusedTaskId={focusedTaskId}

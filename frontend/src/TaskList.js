@@ -20,6 +20,7 @@ export default function TaskList() {
   };
 
   const handleDoubleClickOutside = (event) => {
+    console.log("doble click");
     if (!event.target.closest('.task-item')) {
       addParentTask('New Parent Task');
     }
@@ -27,7 +28,6 @@ export default function TaskList() {
 
   return (
     <div onDoubleClick={handleDoubleClickOutside}>
-      <h2>Task List</h2>
       <ReactSortable list={parentTasks} setList={setParentTasks}>
         {parentTasks.map((task) => (
           <ParentTask key={task.id} task={task} />

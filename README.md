@@ -20,6 +20,17 @@
     ```
     ブラウザで http://localhost:8080/ にアクセスするとアプリケーションにアクセスできます。
 
+3. Reactのビルド
+    ```bash
+    $ cd frontend
+    $ npm run build:watch
+    ```
+    **※ 開発モード**
+    ```bash
+    $ cd frontend
+    $ npm run build:watch
+    ```
+
 ## メモ
 * DBのテストデータ投入
     ```sql

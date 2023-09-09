@@ -44,4 +44,3 @@ def get_all_tasks():
                 child_order ASC;"""
     )
     return cursor.fetchall()
-

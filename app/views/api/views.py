@@ -4,7 +4,7 @@ from app import models
 
 def get_tasks():
     tasks = models.get_all_tasks()
-    #print(tasks, flush=True)
+    # print(tasks, flush=True)
     return jsonify({'tasks': tasks})
 
 

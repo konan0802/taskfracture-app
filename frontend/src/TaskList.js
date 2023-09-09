@@ -5,6 +5,7 @@ import ParentTask from './ParentTask';
 export default function TaskList() {
   const [parentTasks, setParentTasks] = useState([]);
   const [taskIdCounter, setTaskIdCounter] = useState(0);
+  const newTaskRef = React.useRef(null);
 
   const addParentTask = (name, index = parentTasks.length) => {
     const newTaskId = taskIdCounter + 1;
@@ -19,6 +20,9 @@ export default function TaskList() {
     newParentTasks.splice(index, 0, newTask);
     setParentTasks(newParentTasks);
     setTaskIdCounter(newTaskId);
+    setTimeout(() => {
+      newTaskRef.current?.focus();
+    }, 0);
   };
 
   const handleDoubleClickOutside = (event) => {
@@ -41,7 +45,13 @@ export default function TaskList() {
   return (
     <ReactSortable id="task-parent-list" list={parentTasks} setList={setParentTasks}>
       {parentTasks.map((task, index) => (
-        <ParentTask key={task.id} task={task} addParentTask={addParentTask} index={index} />
+        <ParentTask
+          key={task.id}
+          task={task}
+          addParentTask={addParentTask}
+          index={index}
+          newTaskRef={newTaskRef}
+        />
       ))}
     </ReactSortable>
   );

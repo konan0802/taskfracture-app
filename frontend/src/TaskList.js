@@ -82,6 +82,11 @@ export default function TaskList() {
     if (focusedTaskId !== null) {
       setTimeout(() => {
         newTaskRef.current?.focus();
+        const length = newTaskRef.current?.value.length;
+        if (length !== undefined) {
+          newTaskRef.current.selectionStart = length;
+          newTaskRef.current.selectionEnd = length;
+        }
       }, 0);
     }
   }, [focusedTaskId]);

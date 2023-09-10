@@ -21,7 +21,7 @@ def sync_tasks(parent_tasks_data):
             """INSERT INTO parent_tasks (id, name, status, `order`) 
                VALUES (%s, %s, %s, %s) 
                ON DUPLICATE KEY UPDATE name=VALUES(name), status=VALUES(status), `order`=VALUES(`order`)""",
-            (parent_task['id'], parent_task['name'],
+            (parent_task['id'], parent_task.get('name', None),
              parent_task.get('status', 0), parent_task['order'])
         )
         parent_task_id = cursor.lastrowid or parent_task['id']
@@ -29,12 +29,13 @@ def sync_tasks(parent_tasks_data):
 
         for sub_task in parent_task.get('children', []):
             cursor.execute(
-                """INSERT INTO sub_tasks (id, name, status, parent_task_id, `order`) 
+                """INSERT INTO sub_tasks (id, name, estimated_hours, actual_hours, status, parent_task_id, `order`) 
                    VALUES (%s, %s, %s, %s, %s, %s, %s) 
-                   ON DUPLICATE KEY UPDATE name=VALUES(name), status=VALUES(status), 
+                   ON DUPLICATE KEY UPDATE name=VALUES(name), estimated_hours=VALUES(estimated_hours), 
+                                           actual_hours=VALUES(actual_hours), status=VALUES(status), 
                                            parent_task_id=VALUES(parent_task_id), `order`=VALUES(`order`)""",
-                (sub_task['id'], sub_task['name'], sub_task.get(
-                    'status', 0), parent_task_id, sub_task['order'])
+                (sub_task['id'], sub_task.get('name', None), sub_task.get('estimated_hours', 0),
+                 sub_task.get('actual_hours', 0), sub_task.get('status', 0), parent_task_id, sub_task['order'])
             )
             sub_task_id = cursor.lastrowid or sub_task['id']
             task_ids.append(sub_task_id)
@@ -44,10 +45,6 @@ def sync_tasks(parent_tasks_data):
     db.close()
 
     return task_ids
-
-# estimated_hours, actual_hours,
-# estimated_hours=VALUES(estimated_hours), actual_hours=VALUES(actual_hours),
-# sub_task.get('estimated_hours', None), sub_task.get('actual_hours', None),
 
 
 def get_tasks():

@@ -76,7 +76,31 @@ export default function TaskList() {
   useEffect(() => {
     fetchData().then((data) => {
       if (data && Array.isArray(data.tasks)) {
+        // Calculate the new taskIdCounter value based on fetched data
+        const maxTaskId = Math.max(
+          ...data.tasks.map((task) => task.id),
+          ...data.tasks.flatMap((task) =>
+            task.children.map((child) => child.id)
+          )
+        );
+        setTaskIdCounter(maxTaskId + 1); // Update the taskIdCounter
+
+        // Update parentTasks
         setParentTasks(data.tasks);
+
+        // Update taskOrder
+        const newTaskOrder = [];
+        data.tasks.forEach((parentTask) => {
+          newTaskOrder.push(parentTask.id);
+          parentTask.children.forEach((childTask) => {
+            newTaskOrder.push(childTask.id);
+          });
+        });
+        setTaskOrder(newTaskOrder);
+
+        // Reset the focusedTaskId if needed (this is optional)
+        setFocusedTaskId(null);
+
         setFetchStatus("success");
       } else {
         console.error("Fetched data is not an array or data is null");

@@ -17,6 +17,8 @@ export const fetchData = async () => {
 // タスクデータを更新する関数
 export const updateData = async (parentTasks) => {
   try {
+    console.log(parentTasks);
+
     const response = await axios.put(`${API_BASE_URL}/tasks`, {
       tasks: parentTasks,
     });

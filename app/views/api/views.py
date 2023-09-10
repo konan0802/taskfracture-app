@@ -4,7 +4,9 @@ from app import models
 
 def sync_tasks():
     data = request.get_json()
-    parent_tasks_data = data.get('parentTasks', [])
+
+    parent_tasks_data = data.get('tasks', [])
+    print(parent_tasks_data, flush=True)
 
     task_ids = models.sync_tasks(parent_tasks_data)
 

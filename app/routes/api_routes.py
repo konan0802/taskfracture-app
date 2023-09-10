@@ -10,5 +10,5 @@ def get_tasks():
 
 
 @api.route('/tasks', methods=['PUT'])
-def put_task():
-    return views.put_task()
+def sync_tasks():
+    return views.sync_tasks()

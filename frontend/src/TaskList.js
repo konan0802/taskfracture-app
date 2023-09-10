@@ -48,6 +48,24 @@ export default function TaskList() {
     setParentTasks(newParentTasks);
   };
 
+  const updateTaskName = (taskId, newName) => {
+    const newParentTasks = [...parentTasks];
+    for (const parentTask of newParentTasks) {
+      if (parentTask.id === taskId) {
+        parentTask.name = newName;
+        setParentTasks(newParentTasks);
+        return;
+      }
+      for (const childTask of parentTask.children) {
+        if (childTask.id === taskId) {
+          childTask.name = newName;
+          setParentTasks(newParentTasks);
+          return;
+        }
+      }
+    }
+  };
+
   const handleDoubleClickOutside = (event) => {
     event.preventDefault();
     if (!event.target.closest(".task-item")) {
@@ -168,6 +186,7 @@ export default function TaskList() {
           newTaskRef={newTaskRef}
           focusedTaskId={focusedTaskId}
           setFocusedTaskId={setFocusedTaskId}
+          updateTaskName={updateTaskName}
         />
       ))}
     </ReactSortable>

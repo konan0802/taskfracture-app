@@ -3,6 +3,7 @@ import React from "react";
 export default function ChildTask({
   task,
   addChildTask,
+  updateTaskName,
   parentId,
   index,
   newTaskRef,
@@ -27,6 +28,8 @@ export default function ChildTask({
           placeholder="Task Name"
           onKeyDown={handleKeyDown}
           onFocus={() => setFocusedTaskId(task.id)}
+          onChange={(e) => updateTaskName(task.id, e.target.value)}
+          rows="1"
         ></input>
       </div>
     </li>

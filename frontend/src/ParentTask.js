@@ -5,6 +5,7 @@ import ChildTask from "./ChildTask";
 export default function ParentTask({
   task,
   addParentTask,
+  updateTaskName,
   addChildTask,
   updateChildTasks,
   index,
@@ -35,6 +36,8 @@ export default function ParentTask({
           placeholder="Task Name"
           onKeyDown={handleKeyDown}
           onFocus={() => setFocusedTaskId(task.id)}
+          onChange={(e) => updateTaskName(task.id, e.target.value)}
+          rows="1"
         ></input>
       </div>
       <ReactSortable
@@ -52,6 +55,7 @@ export default function ParentTask({
             newTaskRef={newTaskRef}
             focusedTaskId={focusedTaskId}
             setFocusedTaskId={setFocusedTaskId}
+            updateTaskName={updateTaskName}
           />
         ))}
       </ReactSortable>

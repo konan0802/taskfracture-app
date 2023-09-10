@@ -16,18 +16,18 @@ def sync_tasks(parent_tasks_data):
     cursor = db.cursor()
     task_ids = []
 
-    for parent_task in parent_tasks_data:
+    for index, parent_task in enumerate(parent_tasks_data):
         cursor.execute(
             """INSERT INTO parent_tasks (id, name, status, `order`) 
                VALUES (%s, %s, %s, %s) 
                ON DUPLICATE KEY UPDATE name=VALUES(name), status=VALUES(status), `order`=VALUES(`order`)""",
             (parent_task['id'], parent_task.get('name', None),
-             parent_task.get('status', 0), parent_task['order'])
+             parent_task.get('status', 0), index)
         )
         parent_task_id = cursor.lastrowid or parent_task['id']
         task_ids.append(parent_task_id)
 
-        for sub_task in parent_task.get('children', []):
+        for child_index, sub_task in enumerate(parent_task.get('children', [])):
             cursor.execute(
                 """INSERT INTO sub_tasks (id, name, estimated_hours, actual_hours, status, parent_task_id, `order`) 
                    VALUES (%s, %s, %s, %s, %s, %s, %s) 
@@ -35,7 +35,7 @@ def sync_tasks(parent_tasks_data):
                                            actual_hours=VALUES(actual_hours), status=VALUES(status), 
                                            parent_task_id=VALUES(parent_task_id), `order`=VALUES(`order`)""",
                 (sub_task['id'], sub_task.get('name', None), sub_task.get('estimated_hours', 0),
-                 sub_task.get('actual_hours', 0), sub_task.get('status', 0), parent_task_id, sub_task['order'])
+                 sub_task.get('actual_hours', 0), sub_task.get('status', 0), parent_task_id, child_index)
             )
             sub_task_id = cursor.lastrowid or sub_task['id']
             task_ids.append(sub_task_id)
@@ -59,7 +59,8 @@ def get_tasks():
                 NULL     AS estimated_hours,
                 NULL     AS actual_hours,
                 p.order  AS parent_order,
-                NULL     AS child_order
+                NULL     AS child_order,
+                NULL     AS parent_task_id
             FROM
                 parent_tasks p
             UNION ALL
@@ -71,7 +72,8 @@ def get_tasks():
                 c.estimated_hours AS actual_hours,
                 c.actual_hours    AS actual_hours,
                 p.order           AS parent_order,
-                c.order           AS child_order
+                c.order           AS child_order,
+                c.parent_task_id  AS parent_task_id
             FROM
                 sub_tasks c
             JOIN parent_tasks p ON c.parent_task_id = p.id
@@ -99,6 +101,6 @@ def get_tasks():
                 'isParent': False,
                 'order': row['child_order']
             }
-            parent_tasks[row['parent_order']]['children'].append(sub_task)
+            parent_tasks[row['parent_task_id']]['children'].append(sub_task)
 
     return list(parent_tasks.values())

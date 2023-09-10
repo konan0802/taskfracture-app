@@ -11,7 +11,7 @@ export default function TaskList() {
   const [taskOrder, setTaskOrder] = useState([]);
   const [fetchStatus, setFetchStatus] = useState("loading");
 
-  const addParentTask = (name, index = parentTasks.length) => {
+  const addParentTask = (name = "", index = parentTasks.length) => {
     const newTaskId = taskIdCounter + 1;
     const newTask = {
       id: newTaskId,
@@ -27,7 +27,7 @@ export default function TaskList() {
     setFocusedTaskId(newTaskId);
   };
 
-  const addChildTask = (parentId, name, index = 0) => {
+  const addChildTask = (parentId, name = "", index = 0) => {
     const newTaskId = taskIdCounter + 1;
     const newTask = {
       id: newTaskId,
@@ -99,7 +99,7 @@ export default function TaskList() {
         setTaskOrder(newTaskOrder);
 
         // Reset the focusedTaskId if needed (this is optional)
-        setFocusedTaskId(null);
+        //setFocusedTaskId(null);
 
         setFetchStatus("success");
       } else {

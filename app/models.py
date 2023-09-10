@@ -11,7 +11,7 @@ def get_db():
     )
 
 
-def get_all_tasks():
+def get_tasks():
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute(
@@ -44,3 +44,5 @@ def get_all_tasks():
                 child_order ASC;"""
     )
     return cursor.fetchall()
+
+def put_task():

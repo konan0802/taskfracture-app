@@ -72,6 +72,18 @@ export default function TaskList() {
   };
 
   useEffect(() => {
+    // APIからデータをフェッチしてparentTasksを更新する
+    fetchData().then((data) => {
+      setParentTasks(data);
+    });
+  }, []);
+
+  useEffect(() => {
+    // parentTasksが変更されたらAPIを通じてDBを更新する
+    updateData(parentTasks);
+  }, [parentTasks]);
+
+  useEffect(() => {
     window.addEventListener("dblclick", handleDoubleClickOutside);
     return () => {
       window.removeEventListener("dblclick", handleDoubleClickOutside);

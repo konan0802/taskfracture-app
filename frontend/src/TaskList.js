@@ -17,7 +17,6 @@ export default function TaskList() {
       id: newTaskId,
       name,
       isParent: true,
-      order: index,
       children: [],
     };
     const newParentTasks = [...parentTasks];
@@ -33,7 +32,6 @@ export default function TaskList() {
       id: newTaskId,
       name,
       isParent: false,
-      order: index,
     };
     const newParentTasks = [...parentTasks];
     const parentTask = newParentTasks.find((task) => task.id === parentId);

@@ -90,7 +90,6 @@ def get_tasks():
                 'id': row['task_id'],
                 'name': row['name'],
                 'isParent': True,
-                'order': row['parent_order'],
                 'children': []
             }
             parent_tasks[row['task_id']] = parent_task
@@ -99,7 +98,6 @@ def get_tasks():
                 'id': row['task_id'],
                 'name': row['name'],
                 'isParent': False,
-                'order': row['child_order']
             }
             parent_tasks[row['parent_task_id']]['children'].append(sub_task)
 

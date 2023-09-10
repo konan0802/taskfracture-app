@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ReactSortable } from "react-sortablejs";
 import ParentTask from "./ParentTask";
+import { fetchData, updateData } from "./TaskApi";
 
 export default function TaskList() {
   const [parentTasks, setParentTasks] = useState([]);
@@ -8,6 +9,7 @@ export default function TaskList() {
   const newTaskRef = React.useRef(null);
   const [focusedTaskId, setFocusedTaskId] = useState(null);
   const [taskOrder, setTaskOrder] = useState([]);
+  const [fetchStatus, setFetchStatus] = useState("loading");
 
   const addParentTask = (name, index = parentTasks.length) => {
     const newTaskId = taskIdCounter + 1;
@@ -22,7 +24,7 @@ export default function TaskList() {
     newParentTasks.splice(index, 0, newTask);
     setParentTasks(newParentTasks);
     setTaskIdCounter(newTaskId);
-    setFocusedTaskId(newTaskId); // Add this line
+    setFocusedTaskId(newTaskId);
   };
 
   const addChildTask = (parentId, name, index = 0) => {
@@ -72,16 +74,22 @@ export default function TaskList() {
   };
 
   useEffect(() => {
-    // APIからデータをフェッチしてparentTasksを更新する
     fetchData().then((data) => {
-      setParentTasks(data);
+      if (data && Array.isArray(data.tasks)) {
+        setParentTasks(data.tasks);
+        setFetchStatus("success");
+      } else {
+        console.error("Fetched data is not an array or data is null");
+        setFetchStatus("error");
+      }
     });
   }, []);
 
   useEffect(() => {
-    // parentTasksが変更されたらAPIを通じてDBを更新する
-    updateData(parentTasks);
-  }, [parentTasks]);
+    if (fetchStatus === "success") {
+      updateData(parentTasks);
+    }
+  }, [parentTasks, fetchStatus]);
 
   useEffect(() => {
     window.addEventListener("dblclick", handleDoubleClickOutside);

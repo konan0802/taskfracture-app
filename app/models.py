@@ -11,6 +11,45 @@ def get_db():
     )
 
 
+def sync_tasks(parent_tasks_data):
+    db = get_db()
+    cursor = db.cursor()
+    task_ids = []
+
+    for parent_task in parent_tasks_data:
+        cursor.execute(
+            """INSERT INTO parent_tasks (id, name, status, `order`) 
+               VALUES (%s, %s, %s, %s) 
+               ON DUPLICATE KEY UPDATE name=VALUES(name), status=VALUES(status), `order`=VALUES(`order`)""",
+            (parent_task['id'], parent_task['name'],
+             parent_task.get('status', 0), parent_task['order'])
+        )
+        parent_task_id = cursor.lastrowid or parent_task['id']
+        task_ids.append(parent_task_id)
+
+        for sub_task in parent_task.get('children', []):
+            cursor.execute(
+                """INSERT INTO sub_tasks (id, name, status, parent_task_id, `order`) 
+                   VALUES (%s, %s, %s, %s, %s, %s, %s) 
+                   ON DUPLICATE KEY UPDATE name=VALUES(name), status=VALUES(status), 
+                                           parent_task_id=VALUES(parent_task_id), `order`=VALUES(`order`)""",
+                (sub_task['id'], sub_task['name'], sub_task.get(
+                    'status', 0), parent_task_id, sub_task['order'])
+            )
+            sub_task_id = cursor.lastrowid or sub_task['id']
+            task_ids.append(sub_task_id)
+
+    db.commit()
+    cursor.close()
+    db.close()
+
+    return task_ids
+
+# estimated_hours, actual_hours,
+# estimated_hours=VALUES(estimated_hours), actual_hours=VALUES(actual_hours),
+# sub_task.get('estimated_hours', None), sub_task.get('actual_hours', None),
+
+
 def get_tasks():
     db = get_db()
     cursor = db.cursor(dictionary=True)
@@ -43,6 +82,26 @@ def get_tasks():
                 parent_order ASC,
                 child_order ASC;"""
     )
-    return cursor.fetchall()
 
-def put_task():
+    rows = cursor.fetchall()
+    parent_tasks = {}
+    for row in rows:
+        if row['task_type'] == 'parent':
+            parent_task = {
+                'id': row['task_id'],
+                'name': row['name'],
+                'isParent': True,
+                'order': row['parent_order'],
+                'children': []
+            }
+            parent_tasks[row['task_id']] = parent_task
+        else:
+            sub_task = {
+                'id': row['task_id'],
+                'name': row['name'],
+                'isParent': False,
+                'order': row['child_order']
+            }
+            parent_tasks[row['parent_order']]['children'].append(sub_task)
+
+    return list(parent_tasks.values())

@@ -59,8 +59,12 @@ export default function ParentTask({
       </div>
       {showMenu && (
         <div className="context-menu">
-          <button onClick={handleDelete}>Delete</button>
-          <button onClick={handleCloseMenu}>Cancel</button>
+          <div onClick={handleDelete} className="context-menu-item">
+            Delete
+          </div>
+          <div onClick={handleCloseMenu} className="context-menu-item">
+            Cancel
+          </div>
         </div>
       )}
       <ReactSortable

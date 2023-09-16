@@ -61,3 +61,34 @@ body {
     font-size: 14px;
     background-color: #E7F6F2;
 }
+
+.context-menu {
+    position: fixed;
+    z-index: 99;
+    background: #fff;
+    color: #555;
+    font-size: 11px;
+    user-select: none;
+    box-shadow: 2px 2px 2px 0 #8f9091;
+    border: 1px solid #c6c6c6;
+    padding: 0;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin: 0;
+    outline: 0;
+}
+
+.context-menu div {
+    box-sizing: border-box;
+    display: block;
+    padding: 8px 8px 8px 28px;
+    width: 250px;
+    position: relative;
+    cursor: default;
+    font-size: 11px;
+    font-family: sans-serif;
+}
+
+.context-menu div:hover {
+    background: #ebebeb;
+}

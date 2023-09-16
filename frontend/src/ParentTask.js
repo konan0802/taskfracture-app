@@ -57,6 +57,12 @@ export default function ParentTask({
           rows="1"
         ></input>
       </div>
+      {showMenu && (
+        <div className="context-menu">
+          <button onClick={handleDelete}>Delete</button>
+          <button onClick={handleCloseMenu}>Cancel</button>
+        </div>
+      )}
       <ReactSortable
         className="task-child-list"
         list={task.children}
@@ -77,12 +83,6 @@ export default function ParentTask({
           />
         ))}
       </ReactSortable>
-      {showMenu && (
-        <div className="context-menu">
-          <button onClick={handleDelete}>Delete</button>
-          <button onClick={handleCloseMenu}>Cancel</button>
-        </div>
-      )}
     </li>
   );
 }

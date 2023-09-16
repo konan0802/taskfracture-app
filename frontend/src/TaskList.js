@@ -48,6 +48,22 @@ export default function TaskList() {
     setParentTasks(newParentTasks);
   };
 
+  const deleteTask = (taskId) => {
+    const newParentTasks = parentTasks
+      .map((parentTask) => {
+        if (parentTask.id === taskId) {
+          return null;
+        }
+        parentTask.children = parentTask.children.filter(
+          (child) => child.id !== taskId
+        );
+        return parentTask;
+      })
+      .filter((task) => task !== null);
+    setParentTasks(newParentTasks);
+    updateData(parentTasks);
+  };
+
   const updateTaskName = (taskId, newName) => {
     const newParentTasks = [...parentTasks];
     for (const parentTask of newParentTasks) {
@@ -182,6 +198,7 @@ export default function TaskList() {
           addParentTask={addParentTask}
           addChildTask={addChildTask}
           updateChildTasks={updateChildTasks}
+          deleteTask={deleteTask}
           index={index}
           newTaskRef={newTaskRef}
           focusedTaskId={focusedTaskId}

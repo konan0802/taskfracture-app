@@ -14,7 +14,29 @@ def get_db():
 def sync_tasks(parent_tasks_data):
     db = get_db()
     cursor = db.cursor()
-    task_ids = []
+    new_task_ids = []
+
+    # クライアントから送られてきたすべてのタスクIDを保存する
+    for parent_task in parent_tasks_data:
+        new_task_ids.append(parent_task['id'])
+        for sub_task in parent_task.get('children', []):
+            new_task_ids.append(sub_task['id'])
+
+    # 既存のすべてのタスクIDを取得する
+    cursor.execute("SELECT id FROM parent_tasks")
+    existing_parent_task_ids = [row[0] for row in cursor.fetchall()]
+    cursor.execute("SELECT id FROM sub_tasks")
+    existing_sub_task_ids = [row[0] for row in cursor.fetchall()]
+
+    # 削除されたタスクを特定する
+    deleted_parent_task_ids = set(existing_parent_task_ids) - set(new_task_ids)
+    deleted_sub_task_ids = set(existing_sub_task_ids) - set(new_task_ids)
+
+    # 削除されたタスクをデータベースから削除する
+    for task_id in deleted_parent_task_ids:
+        cursor.execute("DELETE FROM parent_tasks WHERE id = %s", (task_id,))
+    for task_id in deleted_sub_task_ids:
+        cursor.execute("DELETE FROM sub_tasks WHERE id = %s", (task_id,))
 
     for index, parent_task in enumerate(parent_tasks_data):
         cursor.execute(
@@ -25,7 +47,7 @@ def sync_tasks(parent_tasks_data):
              parent_task.get('status', 0), index)
         )
         parent_task_id = cursor.lastrowid or parent_task['id']
-        task_ids.append(parent_task_id)
+        # new_task_ids.append(parent_task_id)
 
         for child_index, sub_task in enumerate(parent_task.get('children', [])):
             cursor.execute(
@@ -38,13 +60,13 @@ def sync_tasks(parent_tasks_data):
                  sub_task.get('actual_hours', 0), sub_task.get('status', 0), parent_task_id, child_index)
             )
             sub_task_id = cursor.lastrowid or sub_task['id']
-            task_ids.append(sub_task_id)
+            new_task_ids.append(sub_task_id)
 
     db.commit()
     cursor.close()
     db.close()
 
-    return task_ids
+    return new_task_ids
 
 
 def get_tasks():

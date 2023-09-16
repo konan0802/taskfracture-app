@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function ChildTask({
   task,
   addChildTask,
+  deleteTask,
   updateTaskName,
   parentId,
   index,
@@ -10,6 +11,8 @@ export default function ChildTask({
   focusedTaskId,
   setFocusedTaskId,
 }) {
+  const [showMenu, setShowMenu] = useState(false);
+
   const handleKeyDown = (event) => {
     if (event.nativeEvent.isComposing) return;
 
@@ -19,8 +22,22 @@ export default function ChildTask({
     }
   };
 
+  const handleRightClick = (event) => {
+    event.preventDefault();
+    setShowMenu(true);
+  };
+
+  const handleCloseMenu = () => {
+    setShowMenu(false);
+  };
+
+  const handleDelete = () => {
+    deleteTask(task.id);
+    setShowMenu(false);
+  };
+
   return (
-    <li className="task-item">
+    <li className="task-item" onContextMenu={handleRightClick}>
       <div className="task-child-div">
         <input
           ref={task.id === focusedTaskId ? newTaskRef : null}
@@ -32,6 +49,12 @@ export default function ChildTask({
           rows="1"
         ></input>
       </div>
+      {showMenu && (
+        <div className="context-menu">
+          <button onClick={handleDelete}>Delete</button>
+          <button onClick={handleCloseMenu}>Cancel</button>
+        </div>
+      )}
     </li>
   );
 }

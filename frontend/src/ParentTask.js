@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import ChildTask from "./ChildTask";
 
@@ -8,11 +8,14 @@ export default function ParentTask({
   updateTaskName,
   addChildTask,
   updateChildTasks,
+  deleteTask,
   index,
   newTaskRef,
   focusedTaskId,
   setFocusedTaskId,
 }) {
+  const [showMenu, setShowMenu] = useState(false);
+
   const handleKeyDown = (event) => {
     if (event.nativeEvent.isComposing) return;
 
@@ -27,8 +30,22 @@ export default function ParentTask({
     }
   };
 
+  const handleRightClick = (event) => {
+    event.preventDefault();
+    setShowMenu(true);
+  };
+
+  const handleCloseMenu = () => {
+    setShowMenu(false);
+  };
+
+  const handleDelete = () => {
+    deleteTask(task.id);
+    setShowMenu(false);
+  };
+
   return (
-    <li className="task-item">
+    <li className="task-item" onContextMenu={handleRightClick}>
       <div className="task-parent-div">
         <input
           ref={task.id === focusedTaskId ? newTaskRef : null}
@@ -50,6 +67,7 @@ export default function ParentTask({
             key={childTask.id}
             task={childTask}
             addChildTask={addChildTask}
+            deleteTask={deleteTask}
             parentId={task.id}
             index={childIndex}
             newTaskRef={newTaskRef}
@@ -59,6 +77,12 @@ export default function ParentTask({
           />
         ))}
       </ReactSortable>
+      {showMenu && (
+        <div className="context-menu">
+          <button onClick={handleDelete}>Delete</button>
+          <button onClick={handleCloseMenu}>Cancel</button>
+        </div>
+      )}
     </li>
   );
 }

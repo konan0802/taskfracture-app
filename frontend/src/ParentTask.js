@@ -15,6 +15,7 @@ export default function ParentTask({
   setFocusedTaskId,
 }) {
   const [showMenu, setShowMenu] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
   const handleKeyDown = (event) => {
     if (event.nativeEvent.isComposing) return;
@@ -32,6 +33,9 @@ export default function ParentTask({
 
   const handleRightClick = (event) => {
     event.preventDefault();
+    const x = event.clientX;
+    const y = event.clientY;
+    setMenuPosition({ x, y });
     setShowMenu(true);
   };
 
@@ -58,7 +62,10 @@ export default function ParentTask({
         ></input>
       </div>
       {showMenu && (
-        <div className="context-menu">
+        <div
+          className="context-menu"
+          style={{ top: `${menuPosition.y}px`, left: `${menuPosition.x}px` }}
+        >
           <div onClick={handleDelete} className="context-menu-item">
             Delete
           </div>

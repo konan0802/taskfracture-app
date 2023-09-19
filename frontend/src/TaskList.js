@@ -117,7 +117,7 @@ export default function TaskList() {
     const intervalId = setInterval(() => {
       updateData(parentTasksRef.current);
       console.log("update");
-    }, 60000); // 30000ミリ秒 = 30秒
+    }, 10000); // 30000ミリ秒 = 30秒
 
     // コンポーネントがアンマウントされたときにタイマーをクリア
     return () => {
@@ -138,7 +138,7 @@ export default function TaskList() {
                   task.children.map((child) => child.id)
                 )
               );
-        setTaskIdCounter(maxTaskId + 1); // Update the taskIdCounter
+        setTaskIdCounter(maxTaskId); // Update the taskIdCounter
 
         // Update parentTasks
         setParentTasks(data.tasks);

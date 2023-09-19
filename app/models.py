@@ -35,7 +35,7 @@ def sync_tasks(tasks_data):
 
     # Insert or update tasks
     index = 0
-    for task in enumerate(tasks_data):
+    for _, task in enumerate(tasks_data):
         cursor.execute(
             """INSERT INTO tasks (id, name, is_parent, status, `order`) 
                VALUES (%s, %s, TRUE, %s, %s) 
@@ -45,7 +45,7 @@ def sync_tasks(tasks_data):
         index += 1
         parent_task_id = cursor.lastrowid or task['id']
 
-        for sub_task in enumerate(task.get('children', [])):
+        for _, sub_task in enumerate(task.get('children', [])):
             cursor.execute(
                 """INSERT INTO tasks (id, name, is_parent, status, parent_task_id, `order`) 
                    VALUES (%s, %s, FALSE, %s, %s, %s) 

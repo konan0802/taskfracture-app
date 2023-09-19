@@ -6,7 +6,7 @@ def sync_tasks():
     data = request.get_json()
 
     parent_tasks_data = data.get('tasks', [])
-    print(parent_tasks_data, flush=True)
+    print("parent_tasks_data".format(parent_tasks_data), flush=True)
 
     task_ids = models.sync_tasks(parent_tasks_data)
 

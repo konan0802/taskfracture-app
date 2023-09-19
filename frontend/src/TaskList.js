@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ReactSortable } from "react-sortablejs";
 import ParentTask from "./ParentTask";
 import { fetchData, updateData } from "./TaskApi";
 
 export default function TaskList() {
   const [parentTasks, setParentTasks] = useState([]);
+  const parentTasksRef = useRef(parentTasks);
   const [taskIdCounter, setTaskIdCounter] = useState(0);
   const newTaskRef = React.useRef(null);
   const [focusedTaskId, setFocusedTaskId] = useState(null);
@@ -12,6 +13,8 @@ export default function TaskList() {
   const [fetchStatus, setFetchStatus] = useState("loading");
 
   const addParentTask = (name = "", index = parentTasks.length) => {
+    console.log("add");
+    console.log(taskIdCounter);
     const newTaskId = taskIdCounter + 1;
     const newTask = {
       id: newTaskId,
@@ -24,6 +27,7 @@ export default function TaskList() {
     setParentTasks(newParentTasks);
     setTaskIdCounter(newTaskId);
     setFocusedTaskId(newTaskId);
+    console.log(parentTasks);
   };
 
   const addChildTask = (parentId, name = "", index = 0) => {
@@ -61,7 +65,6 @@ export default function TaskList() {
       })
       .filter((task) => task !== null);
     setParentTasks(newParentTasks);
-    updateData(parentTasks);
   };
 
   const updateTaskName = (taskId, newName) => {
@@ -106,15 +109,35 @@ export default function TaskList() {
   };
 
   useEffect(() => {
+    parentTasksRef.current = parentTasks;
+  }, [parentTasks]);
+
+  useEffect(() => {
+    // 30秒（30000ミリ秒）ごとにデータをアップデート
+    const intervalId = setInterval(() => {
+      updateData(parentTasksRef.current);
+      console.log("update");
+    }, 60000); // 30000ミリ秒 = 30秒
+
+    // コンポーネントがアンマウントされたときにタイマーをクリア
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  useEffect(() => {
     fetchData().then((data) => {
       if (data && Array.isArray(data.tasks)) {
         // Calculate the new taskIdCounter value based on fetched data
-        const maxTaskId = Math.max(
-          ...data.tasks.map((task) => task.id),
-          ...data.tasks.flatMap((task) =>
-            task.children.map((child) => child.id)
-          )
-        );
+        const maxTaskId =
+          data.tasks.length === 0
+            ? 0
+            : Math.max(
+                ...data.tasks.map((task) => task.id),
+                ...data.tasks.flatMap((task) =>
+                  task.children.map((child) => child.id)
+                )
+              );
         setTaskIdCounter(maxTaskId + 1); // Update the taskIdCounter
 
         // Update parentTasks
@@ -140,12 +163,6 @@ export default function TaskList() {
       }
     });
   }, []);
-
-  useEffect(() => {
-    if (fetchStatus === "success") {
-      updateData(parentTasks);
-    }
-  }, [parentTasks, fetchStatus]);
 
   useEffect(() => {
     window.addEventListener("dblclick", handleDoubleClickOutside);

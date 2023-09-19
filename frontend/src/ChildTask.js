@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import _ from "lodash";
 
 export default function ChildTask({
   task,
@@ -14,8 +13,6 @@ export default function ChildTask({
 }) {
   const [showMenu, setShowMenu] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
-
-  const debouncedUpdateTaskName = _.debounce(updateTaskName, 1000);
 
   const handleKeyDown = (event) => {
     if (event.nativeEvent.isComposing) return;
@@ -62,7 +59,7 @@ export default function ChildTask({
           placeholder="Task Name"
           onKeyDown={handleKeyDown}
           onFocus={() => setFocusedTaskId(task.id)}
-          onChange={(e) => debouncedUpdateTaskName(task.id, e.target.value)}
+          onChange={(e) => updateTaskName(task.id, e.target.value)}
           rows="1"
         ></input>
       </div>

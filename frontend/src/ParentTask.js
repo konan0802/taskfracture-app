@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { ReactSortable } from "react-sortablejs";
-import _ from "lodash";
 import ChildTask from "./ChildTask";
 
 export default function ParentTask({
@@ -17,8 +16,6 @@ export default function ParentTask({
 }) {
   const [showMenu, setShowMenu] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
-
-  const debouncedUpdateTaskName = _.debounce(updateTaskName, 300);
 
   const handleKeyDown = (event) => {
     if (event.nativeEvent.isComposing) return;
@@ -70,7 +67,7 @@ export default function ParentTask({
           placeholder="Task Name"
           onKeyDown={handleKeyDown}
           onFocus={() => setFocusedTaskId(task.id)}
-          onChange={(e) => debouncedUpdateTaskName(task.id, e.target.value)}
+          onChange={(e) => updateTaskName(task.id, e.target.value)}
           rows="1"
         ></input>
       </div>

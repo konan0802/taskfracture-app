@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { ReactSortable } from "react-sortablejs";
 import ChildTask from "./ChildTask";
 
-export default function ParentTask({
+const ParentTask = ({
   task,
   addParentTask,
   updateTaskName,
@@ -13,7 +13,7 @@ export default function ParentTask({
   newTaskRef,
   focusedTaskId,
   setFocusedTaskId,
-}) {
+}) => {
   const [showMenu, setShowMenu] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
@@ -106,4 +106,6 @@ export default function ParentTask({
       </ReactSortable>
     </li>
   );
-}
+};
+
+export default memo(ParentTask);

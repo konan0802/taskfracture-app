@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 
-export default function ChildTask({
+const ChildTask = ({
   task,
   addChildTask,
   deleteTask,
@@ -10,7 +10,7 @@ export default function ChildTask({
   newTaskRef,
   focusedTaskId,
   setFocusedTaskId,
-}) {
+}) => {
   const [showMenu, setShowMenu] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
@@ -78,4 +78,6 @@ export default function ChildTask({
       )}
     </li>
   );
-}
+};
+
+export default memo(ChildTask);

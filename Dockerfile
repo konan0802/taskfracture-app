@@ -1,8 +1,22 @@
-FROM python:3.8
+FROM php:8.1-apache
 
-WORKDIR /usr/src/app
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql
 
-CMD [ "flask", "run", "--host=0.0.0.0" ]
+# Copy application source
+COPY . /var/www/html
+
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Install Laravel dependencies (or other framework dependencies)
+RUN composer install
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html/storage
+
+# Expose Apache
+EXPOSE 80

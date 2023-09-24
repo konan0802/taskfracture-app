@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from app import models
+from flask import models
 
 
 def sync_tasks():

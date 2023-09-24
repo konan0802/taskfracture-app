@@ -8,10 +8,11 @@ services:
     environment:
       - FLASK_APP=app/__init__.py
       - FLASK_RUN_HOST=0.0.0.0
+      - FLASK_ENV=development
       - DB_HOST=db
-      - DB_USER=user
-      - DB_PASSWORD=pass
-      - DB_NAME=taskfracture
+      - DB_USER=admin
+      - DB_PASSWORD=LfD7dWMjGD9x
+      - DB_NAME=prod_db
     volumes:
       - ./app:/usr/src/app/app
       - ./requirements.txt:/usr/src/app/requirements.txt
@@ -24,9 +25,9 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: taskfracture
-      MYSQL_USER: user
-      MYSQL_PASSWORD: pass
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: LfD7dWMjGD9x
+      MYSQL_DATABASE: prod_db
     volumes:
       - db-data:/var/lib/mysql
 

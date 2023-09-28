@@ -6,18 +6,17 @@ RUN a2enmod rewrite
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql
 
-# Copy application source
-COPY . /var/www/html
-
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Install Laravel dependencies (or other framework dependencies)
-RUN composer install
+# Set the working directory to /var/www/html
+WORKDIR /var/www/html
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Change DocumentRoot to point to the public directory
+RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 
+# Change the permissions of the /var/www/html directory
+RUN chown -R www-data:www-data /var/www/html
 
 # Expose Apache
 EXPOSE 80

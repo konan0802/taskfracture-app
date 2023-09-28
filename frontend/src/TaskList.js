@@ -130,13 +130,13 @@ export default function TaskList() {
       if (data && Array.isArray(data.tasks)) {
         // Calculate the new taskIdCounter value based on fetched data
         const maxTaskId =
-          data.tasks.length === 0
+          data.tasks && data.tasks.length === 0
             ? 0
             : Math.max(
-                ...data.tasks.map((task) => task.id),
-                ...data.tasks.flatMap((task) =>
-                  task.children.map((child) => child.id)
-                )
+                ...(data.tasks?.map((task) => task.id) || []),
+                ...(data.tasks?.flatMap(
+                  (task) => task.children?.map((child) => child.id) || []
+                ) || [])
               );
         setTaskIdCounter(maxTaskId); // Update the taskIdCounter
 

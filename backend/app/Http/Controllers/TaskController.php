@@ -9,7 +9,7 @@ class TaskController extends Controller
 {
     public function getTasks()
     {
-        $tasks = Task::all(); // すべてのタスクを取得します。
+        $tasks = Task::getTasks();
         return response()->json(['tasks' => $tasks]);
     }
 
@@ -18,9 +18,9 @@ class TaskController extends Controller
         $parentTasksData = $request->input('tasks', []);
         
         // ログ出力
-        \Log::info('parent_tasks_data: '. json_encode($parentTasksData));
+        //\Log::info('parent_tasks_data: '. json_encode($parentTasksData));
         
-        $taskIds = Task::syncTasks($parentTasksData); // タスクの同期を行います。
+        $taskIds = Task::syncTasks($parentTasksData);
         
         return response()->json(['status' => 'success', 'taskIds' => $taskIds]);
     }

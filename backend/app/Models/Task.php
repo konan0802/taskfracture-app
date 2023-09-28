@@ -19,19 +19,21 @@ class Task extends Model
             DB::table('tasks')->where('id', $taskId)->delete();
         }
 
-        foreach ($tasksData as $index => $task) {
+        $taskIndex = 0;
+        foreach ($tasksData as $task) {
             DB::table('tasks')->updateOrInsert(
                 ['id' => $task['id']],
                 [
                     'name' => $task['name'] ?? null,
                     'is_parent' => true,
                     'status' => $task['status'] ?? 0,
-                    'order' => $index
+                    'order' => $taskIndex
                 ]
             );
-
+            $taskIndex++;
             $parentTaskId = $task['id'];
-            foreach ($task['children'] ?? [] as $subIndex => $subTask) {
+
+            foreach ($task['children'] ?? [] as $subTask) {
                 DB::table('tasks')->updateOrInsert(
                     ['id' => $subTask['id']],
                     [
@@ -39,9 +41,10 @@ class Task extends Model
                         'is_parent' => false,
                         'status' => $subTask['status'] ?? 0,
                         'parent_task_id' => $parentTaskId,
-                        'order' => $subIndex
+                        'order' => $taskIndex
                     ]
                 );
+                $taskIndex++;
             }
         }
 

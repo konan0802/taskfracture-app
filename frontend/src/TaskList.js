@@ -13,8 +13,6 @@ export default function TaskList() {
   const [fetchStatus, setFetchStatus] = useState("loading");
 
   const addParentTask = (name = "", index = parentTasks.length) => {
-    console.log("add");
-    console.log(taskIdCounter);
     const newTaskId = taskIdCounter + 1;
     const newTask = {
       id: newTaskId,
@@ -27,7 +25,6 @@ export default function TaskList() {
     setParentTasks(newParentTasks);
     setTaskIdCounter(newTaskId);
     setFocusedTaskId(newTaskId);
-    console.log(parentTasks);
   };
 
   const addChildTask = (parentId, name = "", index = 0) => {
@@ -116,8 +113,7 @@ export default function TaskList() {
     // 30秒（30000ミリ秒）ごとにデータをアップデート
     const intervalId = setInterval(() => {
       updateData(parentTasksRef.current);
-      console.log("update");
-    }, 10000); // 30000ミリ秒 = 30秒
+    }, 10000);
 
     // コンポーネントがアンマウントされたときにタイマーをクリア
     return () => {

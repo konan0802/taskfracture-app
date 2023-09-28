@@ -205,7 +205,7 @@ export default function TaskList() {
   return (
     <ReactSortable
       id="task-parent-list"
-      list={parentTasks}
+      list={parentTasks || []}
       setList={setParentTasks}
     >
       {parentTasks.map((task, index) => (

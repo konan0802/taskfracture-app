@@ -86,7 +86,7 @@ const ParentTask = ({
       )}
       <ReactSortable
         className="task-child-list"
-        list={task.children}
+        list={task.children || []}
         setList={(newChildren) => updateChildTasks(task.id, newChildren)} // Use the function here
       >
         {(task.children || []).map((childTask, childIndex) => (

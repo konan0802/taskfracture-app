@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="icon" href="{{ asset('favicon.ico') }}" />
-    <title>My React App</title>
+    <title>TaskFracture</title>
     <link href="{{ asset('main.css') }}" rel="stylesheet">
 </head>
 <body>

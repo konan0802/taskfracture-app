@@ -89,7 +89,7 @@ const ParentTask = ({
         list={task.children}
         setList={(newChildren) => updateChildTasks(task.id, newChildren)} // Use the function here
       >
-        {task.children.map((childTask, childIndex) => (
+        {(task.children || []).map((childTask, childIndex) => (
           <ChildTask
             key={childTask.id}
             task={childTask}

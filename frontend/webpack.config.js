@@ -1,24 +1,33 @@
 const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-  entry: "./src/index.js", // エントリーポイント（変更する場合あり）
+  entry: "./src/index.js",
   output: {
-    filename: "main.js", // 出力されるファイル名
-    path: path.resolve(__dirname, "../backend/public"), // 出力先のディレクトリ
+    filename: "main.js",
+    path: path.resolve(__dirname, "../backend/public"),
   },
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/, // .jsと.jsxファイルを対象とする
-        exclude: /node_modules/, // node_modulesディレクトリは除外
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
         use: {
-          loader: "babel-loader", // babel-loaderを使用する
+          loader: "babel-loader",
         },
       },
-      // ...その他のルール
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
+      },
     ],
   },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "main.css",
+    }),
+  ],
   resolve: {
-    extensions: [".js", ".jsx"], // .jsと.jsxファイルを解決する
+    extensions: [".js", ".jsx"],
   },
 };

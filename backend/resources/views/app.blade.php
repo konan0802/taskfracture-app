@@ -4,7 +4,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <link rel="icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="icon" href="{{ asset('favicon.png') }}" />
     <title>TaskFracture</title>
     <link href="{{ asset('main.css') }}" rel="stylesheet">
 </head>

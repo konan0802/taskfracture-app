@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="icon" href="{{ asset('favicon.png') }}" />
-    <title>TaskFracture</title>
+    <title>Task Fracture</title>
     <link href="{{ asset('main.css') }}" rel="stylesheet">
 </head>
 <body>

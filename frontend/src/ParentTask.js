@@ -64,7 +64,15 @@ const ParentTask = ({
         <input
           ref={task.id === focusedTaskId ? newTaskRef : null}
           value={task.name}
-          placeholder="Task Name"
+          placeholder="タスク名"
+          onKeyDown={handleKeyDown}
+          onFocus={() => setFocusedTaskId(task.id)}
+          onChange={(e) => updateTaskName(task.id, e.target.value)}
+          rows="1"
+        ></input>
+        <input
+          value={task.estimated_hours}
+          placeholder="タスク名"
           onKeyDown={handleKeyDown}
           onFocus={() => setFocusedTaskId(task.id)}
           onChange={(e) => updateTaskName(task.id, e.target.value)}

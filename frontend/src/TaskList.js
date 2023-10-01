@@ -18,6 +18,9 @@ export default function TaskList() {
       id: newTaskId,
       name,
       isParent: true,
+      status: 0,
+      estimated_hours: null,
+      actual_hours: null,
       children: [],
     };
     const newParentTasks = [...parentTasks];
@@ -33,6 +36,9 @@ export default function TaskList() {
       id: newTaskId,
       name,
       isParent: false,
+      status: 0,
+      estimated_hours: null,
+      actual_hours: null,
     };
     const newParentTasks = [...parentTasks];
     const parentTask = newParentTasks.find((task) => task.id === parentId);

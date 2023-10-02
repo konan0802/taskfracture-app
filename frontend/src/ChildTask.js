@@ -71,7 +71,7 @@ const ChildTask = ({
           value={task.estimated_hours}
           //onKeyDown={handleKeyDown}
           onChange={(e) =>
-            updateTaskInfo(task.id, "taskEstiamted", e.target.value)
+            updateTaskInfo(task.id, "taskEstimated", e.target.value)
           }
           rows="1"
         ></input>

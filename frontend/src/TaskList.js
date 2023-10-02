@@ -82,12 +82,26 @@ export default function TaskList() {
       }
       for (const childTask of parentTask.children) {
         if (childTask.id === taskId) {
-          if (key == "taskName") {
+          if (key === "taskName") {
             childTask.name = value;
-          } else if (key == "taskEstiamted") {
-            childTask.estimated_hours = value;
-          } else if (key == "taskActual") {
-            childTask.actual_hours = value;
+          } else if (key === "taskEstimated") {
+            childTask.estimated_hours = parseFloat(value) || 0;
+            parentTask.estimated_hours = parentTask.children
+              .reduce(
+                (sum, child) => sum + parseFloat(child.estimated_hours || 0),
+                0
+              )
+              .toFixed(2);
+            console.log(parentTask.estimated_hours);
+          } else if (key === "taskActual") {
+            childTask.actual_hours = parseFloat(value) || 0;
+            parentTask.actual_hours = parentTask.children
+              .reduce(
+                (sum, child) => sum + parseFloat(child.actual_hours || 0),
+                0
+              )
+              .toFixed(2);
+            console.log(parentTask.actual_hours);
           }
           setParentTasks(newParentTasks);
           return;

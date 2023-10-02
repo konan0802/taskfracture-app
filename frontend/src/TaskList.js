@@ -86,22 +86,16 @@ export default function TaskList() {
             childTask.name = value;
           } else if (key === "taskEstimated") {
             childTask.estimated_hours = parseFloat(value) || 0;
-            parentTask.estimated_hours = parentTask.children
-              .reduce(
-                (sum, child) => sum + parseFloat(child.estimated_hours || 0),
-                0
-              )
-              .toFixed(2);
-            console.log(parentTask.estimated_hours);
+            parentTask.estimated_hours = parentTask.children.reduce(
+              (sum, child) => sum + parseFloat(child.estimated_hours || 0),
+              0
+            );
           } else if (key === "taskActual") {
             childTask.actual_hours = parseFloat(value) || 0;
-            parentTask.actual_hours = parentTask.children
-              .reduce(
-                (sum, child) => sum + parseFloat(child.actual_hours || 0),
-                0
-              )
-              .toFixed(2);
-            console.log(parentTask.actual_hours);
+            parentTask.actual_hours = parentTask.children.reduce(
+              (sum, child) => sum + parseFloat(child.actual_hours || 0),
+              0
+            );
           }
           setParentTasks(newParentTasks);
           return;

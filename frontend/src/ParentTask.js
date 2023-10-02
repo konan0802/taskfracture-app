@@ -76,26 +76,28 @@ const ParentTask = ({
           type="number"
           step="0.5"
           min="0"
-          value={task.estimated_hours}
           //onKeyDown={handleKeyDown}
           onChange={(e) =>
             updateTaskInfo(task.id, "taskEstimated", e.target.value)
           }
           rows="1"
-        ></span>
+        >
+          {task.estimated_hours}
+        </span>
         <span class="task-h">h</span>
         <span
           class="task-parent-actual"
           type="number"
           step="0.5"
           min="0"
-          value={task.actual_hours}
           //onKeyDown={handleKeyDown}
           onChange={(e) =>
             updateTaskInfo(task.id, "taskActual", e.target.value)
           }
           rows="1"
-        ></span>
+        >
+          {task.actual_hours}
+        </span>
         <span class="task-h">h</span>
       </div>
       {showMenu && (

@@ -5,6 +5,7 @@
 }
 
 body {
+    font-family: Robot, sans-serif;
     background-color: #2C3333 !important;
     overflow-y: scroll;
 }
@@ -63,12 +64,13 @@ body {
     border-radius: 6px;
     width: 50px;
     text-align: right;
+    font-family: Robot, sans-serif;
 }
 
 .task-parent-name,
 .task-parent-estimated,
 .task-parent-actual {
-    font-size: 16.5px;
+    font-size: 16px;
     background-color: #A5C9CA;
 }
 
@@ -86,6 +88,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .task-h {
+    margin-left: 2px;
     margin-right: 20px;
 }
 

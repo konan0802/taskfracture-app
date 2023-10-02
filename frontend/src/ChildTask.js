@@ -75,7 +75,7 @@ const ChildTask = ({
           }
           rows="1"
         ></input>
-        <span class="task-h">h</span>
+        <span class="task-child-h">h</span>
         <input
           class="task-child-actual"
           type="number"
@@ -88,7 +88,7 @@ const ChildTask = ({
           }
           rows="1"
         ></input>
-        <span class="task-h">h</span>
+        <span class="task-child-h">h</span>
       </div>
       {showMenu && (
         <div

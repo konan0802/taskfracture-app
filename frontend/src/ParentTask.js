@@ -84,7 +84,7 @@ const ParentTask = ({
         >
           {task.estimated_hours}
         </span>
-        <span class="task-h">h</span>
+        <span class="task-parent-h">h</span>
         <span
           class="task-parent-actual"
           type="number"
@@ -98,7 +98,7 @@ const ParentTask = ({
         >
           {task.actual_hours}
         </span>
-        <span class="task-h">h</span>
+        <span class="task-parent-h">h</span>
       </div>
       {showMenu && (
         <div

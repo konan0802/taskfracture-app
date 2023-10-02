@@ -5,7 +5,7 @@ import ChildTask from "./ChildTask";
 const ParentTask = ({
   task,
   addParentTask,
-  updateTaskName,
+  updateTaskInfo,
   addChildTask,
   updateChildTasks,
   deleteTask,
@@ -62,22 +62,41 @@ const ParentTask = ({
     <li className="task-item" onContextMenu={handleRightClick}>
       <div className="task-parent-div">
         <input
+          class="task-parent-name"
           ref={task.id === focusedTaskId ? newTaskRef : null}
           value={task.name}
           placeholder="タスク名"
           onKeyDown={handleKeyDown}
           onFocus={() => setFocusedTaskId(task.id)}
-          onChange={(e) => updateTaskName(task.id, e.target.value)}
+          onChange={(e) => updateTaskInfo(task.id, "taskName", e.target.value)}
           rows="1"
         ></input>
-        <input
+        <span
+          class="task-parent-estimated"
+          type="number"
+          step="0.5"
+          min="0"
           value={task.estimated_hours}
-          placeholder="タスク名"
-          onKeyDown={handleKeyDown}
-          onFocus={() => setFocusedTaskId(task.id)}
-          onChange={(e) => updateTaskName(task.id, e.target.value)}
+          //onKeyDown={handleKeyDown}
+          onChange={(e) =>
+            updateTaskInfo(task.id, "taskEstiamted", e.target.value)
+          }
           rows="1"
-        ></input>
+        ></span>
+        <span class="task-h">h</span>
+        <span
+          class="task-parent-actual"
+          type="number"
+          step="0.5"
+          min="0"
+          value={task.actual_hours}
+          //onKeyDown={handleKeyDown}
+          onChange={(e) =>
+            updateTaskInfo(task.id, "taskActual", e.target.value)
+          }
+          rows="1"
+        ></span>
+        <span class="task-h">h</span>
       </div>
       {showMenu && (
         <div
@@ -108,7 +127,7 @@ const ParentTask = ({
             newTaskRef={newTaskRef}
             focusedTaskId={focusedTaskId}
             setFocusedTaskId={setFocusedTaskId}
-            updateTaskName={updateTaskName}
+            updateTaskInfo={updateTaskInfo}
           />
         ))}
       </ReactSortable>

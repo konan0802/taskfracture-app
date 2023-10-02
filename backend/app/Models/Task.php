@@ -27,6 +27,8 @@ class Task extends Model
                     'name' => $task['name'] ?? null,
                     'is_parent' => true,
                     'status' => $task['status'] ?? 0,
+                    'estimated_hours' => $task['estimated_hours'] ?? null,
+                    'actual_hours' => $task['actual_hours'] ?? null,
                     'order' => $taskIndex
                 ]
             );
@@ -40,6 +42,8 @@ class Task extends Model
                         'name' => $subTask['name'] ?? null,
                         'is_parent' => false,
                         'status' => $subTask['status'] ?? 0,
+                        'estimated_hours' => $subTask['estimated_hours'] ?? null,
+                        'actual_hours' => $subTask['actual_hours'] ?? null,
                         'parent_task_id' => $parentTaskId,
                         'order' => $taskIndex
                     ]
@@ -62,6 +66,8 @@ class Task extends Model
                     'id' => $row->id,
                     'name' => $row->name,
                     'isParent' => true,
+                    'estimated_hours' => $row->estimated_hours,
+                    'actual_hours' => $row->actual_hours,
                     'children' => []
                 ];
             } else {
@@ -69,6 +75,8 @@ class Task extends Model
                     'id' => $row->id,
                     'name' => $row->name,
                     'isParent' => false,
+                    'estimated_hours' => $row->estimated_hours,
+                    'actual_hours' => $row->actual_hours,
                 ];
             }
         }

@@ -70,17 +70,25 @@ export default function TaskList() {
     setParentTasks(newParentTasks);
   };
 
-  const updateTaskName = (taskId, newName) => {
+  const updateTaskInfo = (taskId, key, value) => {
     const newParentTasks = [...parentTasks];
     for (const parentTask of newParentTasks) {
       if (parentTask.id === taskId) {
-        parentTask.name = newName;
+        if (key === "taskName") {
+          parentTask.name = value;
+        }
         setParentTasks(newParentTasks);
         return;
       }
       for (const childTask of parentTask.children) {
         if (childTask.id === taskId) {
-          childTask.name = newName;
+          if (key == "taskName") {
+            childTask.name = value;
+          } else if (key == "taskEstiamted") {
+            childTask.estimated_hours = value;
+          } else if (key == "taskActual") {
+            childTask.actual_hours = value;
+          }
           setParentTasks(newParentTasks);
           return;
         }
@@ -144,6 +152,7 @@ export default function TaskList() {
 
         // Update parentTasks
         setParentTasks(data.tasks);
+        console.log(data.tasks);
 
         // Update taskOrder
         const newTaskOrder = [];
@@ -222,7 +231,7 @@ export default function TaskList() {
           newTaskRef={newTaskRef}
           focusedTaskId={focusedTaskId}
           setFocusedTaskId={setFocusedTaskId}
-          updateTaskName={updateTaskName}
+          updateTaskInfo={updateTaskInfo}
         />
       ))}
     </ReactSortable>

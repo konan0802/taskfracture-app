@@ -4,7 +4,7 @@ const ChildTask = ({
   task,
   addChildTask,
   deleteTask,
-  updateTaskName,
+  updateTaskInfo,
   parentId,
   index,
   newTaskRef,
@@ -54,14 +54,41 @@ const ChildTask = ({
     <li className="task-item" onContextMenu={handleRightClick}>
       <div className="task-child-div">
         <input
+          class="task-child-name"
           ref={task.id === focusedTaskId ? newTaskRef : null}
           value={task.name}
           placeholder="タスク名"
           onKeyDown={handleKeyDown}
           onFocus={() => setFocusedTaskId(task.id)}
-          onChange={(e) => updateTaskName(task.id, e.target.value)}
+          onChange={(e) => updateTaskInfo(task.id, "taskName", e.target.value)}
           rows="1"
         ></input>
+        <input
+          class="task-child-estimated"
+          type="number"
+          step="0.5"
+          min="0"
+          value={task.estimated_hours}
+          //onKeyDown={handleKeyDown}
+          onChange={(e) =>
+            updateTaskInfo(task.id, "taskEstiamted", e.target.value)
+          }
+          rows="1"
+        ></input>
+        <span class="task-h">h</span>
+        <input
+          class="task-child-actual"
+          type="number"
+          step="0.5"
+          min="0"
+          value={task.actual_hours}
+          //onKeyDown={handleKeyDown}
+          onChange={(e) =>
+            updateTaskInfo(task.id, "taskActual", e.target.value)
+          }
+          rows="1"
+        ></input>
+        <span class="task-h">h</span>
       </div>
       {showMenu && (
         <div

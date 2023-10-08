@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { ReactSortable } from "react-sortablejs";
 import ParentTask from "./ParentTask";
 import { fetchData, updateData } from "./TaskApi";
@@ -76,6 +76,8 @@ export default function TaskList() {
       if (parentTask.id === taskId) {
         if (key === "taskName") {
           parentTask.name = value;
+        } else if (key === "taskStatus") {
+          parentTask.status = value;
         }
         setParentTasks(newParentTasks);
         return;
@@ -96,6 +98,16 @@ export default function TaskList() {
               (sum, child) => sum + parseFloat(child.actual_hours || 0),
               0
             );
+          } else if (key === "taskStatus") {
+            childTask.status = value;
+
+            // 全ての子タスクが同じstatusを持っているか確認
+            const allSameStatus = parentTask.children.every(
+              (child) => child.status === value
+            );
+            if (allSameStatus) {
+              parentTask.status = value;
+            }
           }
           setParentTasks(newParentTasks);
           return;
@@ -126,6 +138,30 @@ export default function TaskList() {
       setFocusedTaskId(taskOrder[currentIndex + 1]);
     }
   };
+
+  // 子タスクの見積工数と実績工数の合計を計算する関数
+  const calculateChildTasksTotals = () => {
+    let totalEstimatedHours = 0;
+    let totalActualHours = 0;
+
+    parentTasks.forEach((parentTask) => {
+      parentTask.children.forEach((childTask) => {
+        totalEstimatedHours += parseFloat(childTask.estimated_hours || 0);
+        totalActualHours += parseFloat(childTask.actual_hours || 0);
+      });
+    });
+
+    return {
+      totalEstimatedHours,
+      totalActualHours,
+    };
+  };
+
+  // useMemoフックを使用して、parentTasksの値が変わるたびに合計値を再計算する
+  const { totalEstimatedHours, totalActualHours } = useMemo(
+    calculateChildTasksTotals,
+    [parentTasks]
+  );
 
   useEffect(() => {
     parentTasksRef.current = parentTasks;
@@ -222,26 +258,33 @@ export default function TaskList() {
   }, [focusedTaskId, taskOrder]);
 
   return (
-    <ReactSortable
-      id="task-parent-list"
-      list={parentTasks || []}
-      setList={setParentTasks}
-    >
-      {parentTasks.map((task, index) => (
-        <ParentTask
-          key={task.id}
-          task={task}
-          addParentTask={addParentTask}
-          addChildTask={addChildTask}
-          updateChildTasks={updateChildTasks}
-          deleteTask={deleteTask}
-          index={index}
-          newTaskRef={newTaskRef}
-          focusedTaskId={focusedTaskId}
-          setFocusedTaskId={setFocusedTaskId}
-          updateTaskInfo={updateTaskInfo}
-        />
-      ))}
-    </ReactSortable>
+    <div>
+      <ReactSortable
+        id="task-parent-list"
+        list={parentTasks || []}
+        setList={setParentTasks}
+      >
+        {parentTasks.map((task, index) => (
+          <ParentTask
+            key={task.id}
+            task={task}
+            addParentTask={addParentTask}
+            addChildTask={addChildTask}
+            updateChildTasks={updateChildTasks}
+            deleteTask={deleteTask}
+            index={index}
+            newTaskRef={newTaskRef}
+            focusedTaskId={focusedTaskId}
+            setFocusedTaskId={setFocusedTaskId}
+            updateTaskInfo={updateTaskInfo}
+          />
+        ))}
+      </ReactSortable>
+      <div className="totals">
+        <p className="totals-today">Today :</p>
+        <p className="totals-est">{totalEstimatedHours} h</p>
+        <p className="totals-act">{totalActualHours} h</p>
+      </div>
+    </div>
   );
 }

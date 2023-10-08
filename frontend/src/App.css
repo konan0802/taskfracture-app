@@ -75,6 +75,12 @@ body {
     background-color: #A5C9CA;
 }
 
+.task-parent-estimated,
+.task-parent-actual,
+.task-parent-h {
+    color: darkslategray;
+}
+
 .task-child-name,
 .task-child-estimated,
 .task-child-actual {
@@ -101,6 +107,23 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .task-child-h {
     font-size: 14.5px;
+}
+
+.totals {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 39px;
+}
+
+.totals-today,
+.totals-est,
+.totals-act {
+    font-size: 14.5px;
+    color: whitesmoke;
+    width: 70px;
+    margin-right: 13px;
+    text-align: right;
+    font-weight: 700;
 }
 
 .context-menu {

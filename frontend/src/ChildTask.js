@@ -14,6 +14,22 @@ const ChildTask = ({
   const [showMenu, setShowMenu] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
+  function getStatusClassName(status) {
+    switch (status) {
+      case 0:
+        return "status-todo";
+      case 1:
+        return "status-doing";
+      case 2:
+        return "status-done";
+      case 3:
+        return "status-today";
+      default:
+        return "";
+    }
+  }
+  const statusClass = getStatusClassName(task.status);
+
   const handleKeyDown = (event) => {
     if (event.nativeEvent.isComposing) return;
 
@@ -29,6 +45,11 @@ const ChildTask = ({
     const y = event.clientY;
     setMenuPosition({ x, y });
     setShowMenu(true);
+  };
+
+  const handleSetToday = () => {
+    updateTaskInfo(task.id, "taskStatus", 3);
+    setShowMenu(false);
   };
 
   const handleCloseMenu = () => {
@@ -51,7 +72,7 @@ const ChildTask = ({
   }, [showMenu]);
 
   return (
-    <li className="task-item" onContextMenu={handleRightClick}>
+    <li className={`task-item ${statusClass}`} onContextMenu={handleRightClick}>
       <div className="task-child-div">
         <input
           class="task-child-name"
@@ -95,11 +116,11 @@ const ChildTask = ({
           className="context-menu"
           style={{ top: `${menuPosition.y}px`, left: `${menuPosition.x}px` }}
         >
+          <div onClick={handleSetToday} className="context-menu-item">
+            Today
+          </div>
           <div onClick={handleDelete} className="context-menu-item">
             Delete
-          </div>
-          <div onClick={handleCloseMenu} className="context-menu-item">
-            Cancel
           </div>
         </div>
       )}

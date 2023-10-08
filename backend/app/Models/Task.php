@@ -66,6 +66,7 @@ class Task extends Model
                     'id' => $row->id,
                     'name' => $row->name,
                     'isParent' => true,
+                    'status' => $row->status,
                     'estimated_hours' => $row->estimated_hours,
                     'actual_hours' => $row->actual_hours,
                     'children' => []
@@ -75,6 +76,7 @@ class Task extends Model
                     'id' => $row->id,
                     'name' => $row->name,
                     'isParent' => false,
+                    'status' => $row->status,
                     'estimated_hours' => $row->estimated_hours,
                     'actual_hours' => $row->actual_hours,
                 ];

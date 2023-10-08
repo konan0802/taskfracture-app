@@ -43,6 +43,9 @@ export default function TaskList() {
     const newParentTasks = [...parentTasks];
     const parentTask = newParentTasks.find((task) => task.id === parentId);
     parentTask.children.splice(index, 0, newTask);
+
+    parentTask.status = 0;
+
     setParentTasks(newParentTasks);
     setTaskIdCounter(newTaskId);
     setFocusedTaskId(newTaskId);
@@ -107,6 +110,8 @@ export default function TaskList() {
             );
             if (allSameStatus) {
               parentTask.status = value;
+            } else {
+              parentTask.status = 0;
             }
           }
           setParentTasks(newParentTasks);
@@ -146,8 +151,10 @@ export default function TaskList() {
 
     parentTasks.forEach((parentTask) => {
       parentTask.children.forEach((childTask) => {
-        totalEstimatedHours += parseFloat(childTask.estimated_hours || 0);
-        totalActualHours += parseFloat(childTask.actual_hours || 0);
+        if (childTask.status === 3) {
+          totalEstimatedHours += parseFloat(childTask.estimated_hours || 0);
+          totalActualHours += parseFloat(childTask.actual_hours || 0);
+        }
       });
     });
 

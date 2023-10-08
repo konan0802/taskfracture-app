@@ -47,8 +47,8 @@ const ChildTask = ({
     setShowMenu(true);
   };
 
-  const handleSetToday = () => {
-    updateTaskInfo(task.id, "taskStatus", 3);
+  const handleSetStatus = (status) => {
+    updateTaskInfo(task.id, "taskStatus", status);
     setShowMenu(false);
   };
 
@@ -116,10 +116,13 @@ const ChildTask = ({
           className="context-menu"
           style={{ top: `${menuPosition.y}px`, left: `${menuPosition.x}px` }}
         >
-          <div onClick={handleSetToday} className="context-menu-item">
+          <div onClick={() => handleSetStatus(0)} className="context-menu-item">
+            ToDo
+          </div>
+          <div onClick={() => handleSetStatus(3)} className="context-menu-item">
             Today
           </div>
-          <div onClick={handleDelete} className="context-menu-item">
+          <div onClick={() => handleDelete} className="context-menu-item">
             Delete
           </div>
         </div>

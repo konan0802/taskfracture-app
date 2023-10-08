@@ -72,8 +72,8 @@ const ChildTask = ({
   }, [showMenu]);
 
   return (
-    <li className={`task-item ${statusClass}`} onContextMenu={handleRightClick}>
-      <div className="task-child-div">
+    <li className="task-item" onContextMenu={handleRightClick}>
+      <div className={`task-child-div ${statusClass}`}>
         <input
           class="task-child-name"
           ref={task.id === focusedTaskId ? newTaskRef : null}

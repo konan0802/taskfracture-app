@@ -47,6 +47,10 @@ body {
     background-color: #E7F6F2;
 }
 
+.status-today {
+    background-color: red;
+}
+
 .task-parent-name,
 .task-child-name {
     border: none;
@@ -72,7 +76,7 @@ body {
 .task-parent-estimated,
 .task-parent-actual {
     font-size: 16px;
-    background-color: #A5C9CA;
+    background-color: inherit;
 }
 
 .task-parent-estimated,
@@ -85,7 +89,7 @@ body {
 .task-child-estimated,
 .task-child-actual {
     font-size: 14.5px;
-    background-color: #E7F6F2;
+    background-color: inherit;
 }
 
 input[type="number"]::-webkit-outer-spin-button, 

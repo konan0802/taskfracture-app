@@ -80,8 +80,8 @@ const ParentTask = ({
   }, [showMenu]);
 
   return (
-    <li className={`task-item ${statusClass}`} onContextMenu={handleRightClick}>
-      <div className="task-parent-div">
+    <li className="task-item" onContextMenu={handleRightClick}>
+      <div className={`task-parent-div ${statusClass}`}>
         <input
           class="task-parent-name"
           ref={task.id === focusedTaskId ? newTaskRef : null}

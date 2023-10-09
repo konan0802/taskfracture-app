@@ -11,7 +11,8 @@ body {
 }
 
 #mainWrapper {
-    max-width: 82%;
+    width: 80%;
+    max-width: 1250px;
     margin: 90px auto;
 }
 

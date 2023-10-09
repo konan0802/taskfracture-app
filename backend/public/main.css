@@ -11,12 +11,17 @@ body {
 }
 
 #mainWrapper {
-    max-width: 930px;
+    max-width: 82%;
     margin: 90px auto;
+}
+
+#mainWrapper > div {
+    display: flex;
 }
 
 #task-parent-list {
     padding-inline-start: 0;
+    width: 100%;
 }
 
 .task-child-list {
@@ -114,20 +119,32 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .totals {
-    display: flex;
     justify-content: flex-end;
-    padding-right: 39px;
+    margin-left: 60px;
 }
 
-.totals-today,
+.totals-val {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.totals-today {
+    font-size: 22px;
+    color: #FF5252;
+    width: 205px;
+    margin: 0;
+    text-align: left;
+    font-weight: 700;
+}
+
 .totals-est,
 .totals-act {
-    font-size: 14.5px;
+    font-size: 22px;
     color: #FF5252;
-    width: 70px;
-    margin-right: 13px;
+    width: 95px;
+    margin: 13px 0 0 0;
     text-align: right;
-    font-weight: 700;
+    font-weight: bold;
 }
 
 .context-menu {

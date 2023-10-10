@@ -57,6 +57,29 @@ body {
     background-color: #FF5252;
 }
 
+.status-done {
+    background-color: #9F1F1F;
+}
+
+.task-parent-div.status-done::before {
+    position: absolute;
+    content: '';
+    background-color: #000;
+    height: 1px;
+    width: 57.8%;
+    margin-top: 10px;
+}
+
+.task-child-div.status-done::before {
+    position: absolute;
+    content: '';
+    background-color: #000;
+    height: 1px;
+    width: 53%;
+    margin-top: 9px;
+
+}
+
 .task-parent-name,
 .task-child-name {
     border: none;
@@ -139,13 +162,19 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .totals-est,
-.totals-act {
+.totals-act,
+.totals-arrow {
     font-size: 22px;
     color: #FF5252;
-    width: 95px;
+    width: 85px;
     margin: 13px 0 0 0;
     text-align: right;
     font-weight: bold;
+}
+
+.totals-arrow {
+    width: 40px;
+    margin: 11px 0 0 0;
 }
 
 .context-menu {

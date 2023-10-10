@@ -122,6 +122,9 @@ const ChildTask = ({
           <div onClick={() => handleSetStatus(3)} className="context-menu-item">
             Today
           </div>
+          <div onClick={() => handleSetStatus(2)} className="context-menu-item">
+            Done
+          </div>
           <div onClick={handleDelete} className="context-menu-item">
             Delete
           </div>

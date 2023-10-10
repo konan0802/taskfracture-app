@@ -157,7 +157,7 @@ export default function TaskList() {
 
     parentTasks.forEach((parentTask) => {
       parentTask.children.forEach((childTask) => {
-        if (childTask.status === 3) {
+        if (childTask.status === 2 || childTask.status === 3) {
           totalEstimatedHours += parseFloat(childTask.estimated_hours || 0);
           totalActualHours += parseFloat(childTask.actual_hours || 0);
         }

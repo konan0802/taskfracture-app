@@ -81,6 +81,7 @@ export default function TaskList() {
           parentTask.name = value;
         } else if (key === "taskStatus") {
           parentTask.status = value;
+          parentTask.children.forEach((child) => (child.status = value));
         }
         setParentTasks(newParentTasks);
         return;
@@ -104,12 +105,17 @@ export default function TaskList() {
           } else if (key === "taskStatus") {
             childTask.status = value;
 
-            // 全ての子タスクが同じstatusを持っているか確認
-            const allSameStatus = parentTask.children.every(
-              (child) => child.status === value
+            const childStatuses = new Set(
+              parentTask.children.map((child) => child.status)
             );
-            if (allSameStatus) {
-              parentTask.status = value;
+            if (childStatuses.size === 1) {
+              parentTask.status = childTask.status;
+            } else if (
+              childStatuses.has(2) &&
+              childStatuses.has(3) &&
+              childStatuses.size === 2
+            ) {
+              parentTask.status = 3;
             } else {
               parentTask.status = 0;
             }

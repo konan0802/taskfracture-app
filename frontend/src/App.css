@@ -38,8 +38,9 @@ body {
 
 .task-parent-div,
 .task-child-div {
-    border-radius: 6px;
+    position: relative;
     display: flex;
+    border-radius: 6px;
     align-items: baseline;
 }
 
@@ -61,23 +62,14 @@ body {
     background-color: #9F1F1F;
 }
 
-.task-parent-div.status-done::before {
-    position: absolute;
-    content: '';
-    background-color: #000;
-    height: 1px;
-    width: 57.8%;
-    margin-top: 10px;
-}
-
+.task-parent-div.status-done::before,
 .task-child-div.status-done::before {
     position: absolute;
     content: '';
     background-color: #000;
     height: 1px;
-    width: 53%;
+    width: 96.5%;
     margin-top: 9px;
-
 }
 
 .task-parent-name,

@@ -296,9 +296,9 @@ export default function TaskList() {
       <div className="totals">
         <p className="totals-today">Today's Progress</p>
         <div className="totals-val">
-          <p className="totals-est">{totalEstimatedHours} h</p>
+          <p className="totals-est">{totalEstimatedHours}&thinsp;h</p>
           <p className="totals-arrow">⇒</p>
-          <p className="totals-act">{totalActualHours} h</p>
+          <p className="totals-act">{totalActualHours}&thinsp;h</p>
         </div>
       </div>
     </div>

@@ -3,12 +3,11 @@ import { useState, useEffect } from "react";
 
 function useLongPress(onLongPress, ms = 500) {
   const [startLongPress, setStartLongPress] = useState(false);
-  const [eventData, setEventData] = useState(null);
 
   useEffect(() => {
     let timerId;
     if (startLongPress) {
-      timerId = setTimeout(() => onLongPress(eventData), ms);
+      timerId = setTimeout(onLongPress, ms);
     } else {
       clearTimeout(timerId);
     }
@@ -16,24 +15,23 @@ function useLongPress(onLongPress, ms = 500) {
     return () => {
       clearTimeout(timerId);
     };
-  }, [startLongPress, onLongPress, ms, eventData]);
+  }, [startLongPress, onLongPress, ms]);
 
   const start = (event) => {
-    setEventData({ clientX: event.clientX, clientY: event.clientY });
+    event.preventDefault();
     setStartLongPress(true);
   };
 
   const stop = () => {
     setStartLongPress(false);
-    setEventData(null);
   };
 
   return {
-    onMouseDown: (event) => start(event),
+    onTouchStart: start,
+    onTouchEnd: stop,
+    onMouseDown: start,
     onMouseUp: stop,
     onMouseLeave: stop,
-    onTouchStart: (event) => start(event.touches[0]),
-    onTouchEnd: stop,
   };
 }
 

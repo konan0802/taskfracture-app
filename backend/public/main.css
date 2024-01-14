@@ -224,8 +224,12 @@ input[type="number"]::-webkit-inner-spin-button {
         width: 94%;
     }
 
+    .totals {
+        margin-left: 50px;
+    }
     .totals-today {
         font-size: 14px;
+        width: 135px;
     }
     .totals-est,
     .totals-act,

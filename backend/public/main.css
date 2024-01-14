@@ -218,6 +218,11 @@ input[type="number"]::-webkit-inner-spin-button {
         font-size: 9px;
     }
 
+    .task-parent-div.status-done::before,
+    .task-child-div.status-done::before {
+        margin-top: 6px;
+    }
+
     .totals-today {
         font-size: 14px;
     }

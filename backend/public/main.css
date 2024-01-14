@@ -198,3 +198,33 @@ input[type="number"]::-webkit-inner-spin-button {
     background: #ebebeb;
 }
 
+@media(max-width:1024px) {
+    .task-parent-name,
+    .task-parent-estimated,
+    .task-parent-actual {
+        font-size: 10px;
+    }
+    .task-child-name,
+    .task-child-estimated,
+    .task-child-actual {
+        font-size: 9px;
+        background-color: inherit;
+    }
+
+    .task-parent-h {
+        font-size: 10px;
+    }
+    .task-child-h {
+        font-size: 9px;
+    }
+
+    .totals-today {
+        font-size: 14px;
+    }
+    .totals-est,
+    .totals-act,
+    .totals-arrow {
+        font-size: 14px;
+    }
+}
+

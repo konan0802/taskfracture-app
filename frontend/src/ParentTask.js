@@ -56,6 +56,14 @@ const ParentTask = ({
     setShowMenu(true);
   };
 
+  const onLongPress = (eventData) => {
+    const { clientX, clientY } = eventData;
+    setMenuPosition({ x: clientX, y: clientY });
+    setShowMenu(true);
+  };
+
+  const longPressEvent = useLongPress(onLongPress, 500);
+
   const handleSetStatus = (status) => {
     updateTaskInfo(task.id, "taskStatus", status);
     setShowMenu(false);
@@ -79,13 +87,6 @@ const ParentTask = ({
       document.removeEventListener("click", handleCloseMenu);
     };
   }, [showMenu]);
-
-  // 長押しイベントでコンテキストメニューを表示する
-  const onLongPress = () => {
-    setShowMenu(true);
-  };
-
-  const longPressEvent = useLongPress(onLongPress, 500); // 500ミリ秒の長押し
 
   return (
     <li

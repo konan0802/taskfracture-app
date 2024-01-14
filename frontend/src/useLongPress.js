@@ -19,6 +19,11 @@ function useLongPress(onLongPress, ms = 500) {
   }, [startLongPress, onLongPress, ms, eventData]);
 
   const start = (event) => {
+    // タッチイベントのデフォルト動作を防止
+    if (event.type === "touchstart") {
+      event.preventDefault();
+    }
+
     setEventData({ clientX: event.clientX, clientY: event.clientY });
     setStartLongPress(true);
   };

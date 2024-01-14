@@ -71,8 +71,19 @@ const ChildTask = ({
     };
   }, [showMenu]);
 
+  // 長押しイベントでコンテキストメニューを表示する
+  const onLongPress = () => {
+    setShowMenu(true);
+  };
+
+  const longPressEvent = useLongPress(onLongPress, 500); // 500ミリ秒の長押し
+
   return (
-    <li className="task-item" onContextMenu={handleRightClick}>
+    <li
+      className="task-item"
+      {...longPressEvent}
+      onContextMenu={handleRightClick}
+    >
       <div className={`task-child-div ${statusClass}`}>
         <input
           class="task-child-name"

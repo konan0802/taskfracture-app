@@ -1,6 +1,7 @@
 import React, { useState, useEffect, memo } from "react";
 import { ReactSortable } from "react-sortablejs";
 import ChildTask from "./ChildTask";
+import useLongPress from "./useLongPress";
 
 const ParentTask = ({
   task,
@@ -79,8 +80,19 @@ const ParentTask = ({
     };
   }, [showMenu]);
 
+  // 長押しイベントでコンテキストメニューを表示する
+  const onLongPress = () => {
+    setShowMenu(true);
+  };
+
+  const longPressEvent = useLongPress(onLongPress, 500); // 500ミリ秒の長押し
+
   return (
-    <li className="task-item" onContextMenu={handleRightClick}>
+    <li
+      className="task-item"
+      {...longPressEvent}
+      onContextMenu={handleRightClick}
+    >
       <div className={`task-parent-div ${statusClass}`}>
         <input
           class="task-parent-name"
